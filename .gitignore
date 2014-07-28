@@ -17,10 +17,13 @@ lib64/
 parts/
 sdist/
 var/
-.webassets-cache/
 *.egg-info/
 .installed.cfg
 *.egg
+
+# lessc and webassests
+.webassets-cache/
+gen/
 
 # Installer logs
 pip-log.txt
