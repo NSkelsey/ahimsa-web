@@ -13,11 +13,11 @@ build/
 develop-eggs/
 dist/
 eggs/
-lib/
 lib64/
 parts/
 sdist/
 var/
+.webassets-cache/
 *.egg-info/
 .installed.cfg
 *.egg
@@ -52,3 +52,6 @@ coverage.xml
 # Sphinx documentation
 docs/_build/
 
+
+# Vim swap files
+.*.swp

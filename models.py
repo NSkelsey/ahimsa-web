@@ -1,13 +1,13 @@
 from sqlalchemy import (Column, String, create_engine, Integer, ForeignKey)
 from sqlalchemy import orm
-from sqlalchemy.orm import sessionmaker, relationship
+from sqlalchemy.orm import sessionmaker, relationship, scoped_session
 from sqlalchemy.ext.automap import automap_base
 
 from config import DB_PATH, DEBUG
 
-engine = create_engine('sqlite:///{}'.format(DB_PATH), echo=DEBUG)
+engine = create_engine('sqlite:///{}'.format(DB_PATH), 
+        echo=False)#echo=DEBUG)
 Base = automap_base()
-Session = sessionmaker(bind=engine)
 
 
 class Bulletin(Base):
@@ -29,8 +29,13 @@ class Bulletin(Base):
     block       = relationship('BlockHead', uselist=False)
 
     def __repr__(self):
-        s = '<Bulletin: txid:{} topic:{} msg:{}>'
-        return s.format(self.txid, self.topic, len(self.message))
+        t = trim(7)
+        s = '<Bltn tx:{0} auth:{3} topic:{1} msg:{2}>'
+        return s.format(t(self.txid), t(self.topic), len(self.message), t(self.author))
+
+def trim(l):
+    return lambda s: s if len(s) < l else s[:l]
+
 
 class BlockHead(Base):
     '''
@@ -52,18 +57,18 @@ class BlockHead(Base):
     prevblock = relationship('BlockHead', uselist=False, single_parent=True)
 
     def __repr__(self):
-        s = '<BlockHead: hash:{} height:{}>'
-        return s.format(self.hash, self.height)
+        t = trim(12)
+        s = '<Blck: hash:{} height:{}>'
+        return s.format(t(self.hash), self.height)
 
-def prep_models():
-    Base.prepare(engine, reflect=True)
-
+# We must introspect the db to properly build out our models
+Base.prepare(engine, reflect=True)
+db_session = scoped_session(sessionmaker(bind=engine))
+Base.query = db_session.query_property()
 
 if __name__ == '__main__':
-    prep_models()
-    session = Session()
-    blk = session.query(BlockHead).limit(1).first()
-    bltn = session.query(Bulletin).first()
+    blk = db_session.query(BlockHead).limit(1).first()
+    bltn = db_session.query(Bulletin).first()
 
     print blk
     print bltn

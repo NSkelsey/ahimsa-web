@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+<div class="sub-head">
+    <h3>Topics <small>by popularity</small></h3>
+</div>
+
+<div class="list">
+    {% for topic in topics %} 
+    <div class="item topic-list">
+        <a href="{{ url_for('topic', topurl=topic.title) }}">{{ topic.title }}</a>
+    </div>
+    {% endfor %}
+</div>
+{% endblock content %}
+

@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+<div class="sub-head">
+    <h3>Blocks <small>The last 60 blocks</small></h3>
+</div>
+<div class="list">
+    {% for block in blocks %}
+        <div class="item">
+            {{ block.hash }} num bulletins {{ block.num_bulletins }}
+        </div>
+    {% endfor %}
+</div>
+
+{% endblock content %}

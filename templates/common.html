@@ -1,0 +1,11 @@
+{% macro render_bulletin(bltn) %}
+<div class="bltn">
+    <div class="head">
+        <h4>{{ bltn.topic }}</h4><p>Height: {{ bltn.block.height }}</p>
+    </div>
+    <div class="body">
+        {{ render_markdown(bltn.message) | safe }}
+    </div>
+</div>
+
+{% endmacro %}

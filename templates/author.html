@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% from 'common.html' import render_bulletin %} 
+
+{% block content %}
+
+<div class="sub-head">
+    <h4>{{ author.name }} <small> Has published {{ author.num }} Bulletins</small></h4>
+</div>
+
+{% for bltn in bltns %}
+    {{ render_bulletin(bltn) }}
+{% endfor %}
+
+{% endblock content %}
