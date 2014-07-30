@@ -5,13 +5,13 @@
 <div class="sub-head">
     <h3>Recently Seen<small>These are Bulletins that have not been mined.</small></h3>
 </div>
-<div class="list">
+<div class="bltn-list list">
     {% for bltn in unconfd_bltns %}
-    <div class="item">
+    <div class="item"><div class="msg">
         {{ render_bulletin(bltn) }}
-    </div>
+    </div></div>
     {% else %}
-    <div class="empty">
+    <div class="empty-list">
         <h4>There are no unconfirmed bulletins.</h4>
     </div>
     {% endfor %}
@@ -20,11 +20,11 @@
 <div class="sub-head">
     <h3>Recently Confirmed<small>These are Bulletins that were just mined.</small></h3>
 </div>
-<div class="list">
+<div class="bltn-list list">
     {% for bltn in confd_bltns %}
-    <div class="item">
+    <div class="item"><div class="msg">
         {{ render_bulletin(bltn) }}
-    </div>
+    </div></div>
     {% endfor %}
 </div>
 {% endblock content %}

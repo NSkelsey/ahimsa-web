@@ -23,7 +23,7 @@ js_files = ['lib/js/jquery.js', 'lib/bootstrap/dist/js/bootstrap.js']
 js = Bundle(*js_files, output='gen/js_lib.js')
 assets.register('js_lib', js)
 
-less_files = ['css/home.less']
+less_files = ['css/home.less', 'css/bulletin.less']
 less = Bundle(*less_files, filters='less', output='gen/css_all.css')
 assets.register('css', less)
 
@@ -38,10 +38,11 @@ def shutdown_session(exception=None):
     # closes the session
     db_session.remove()
 
-# Markdown
+# jinja filters
 markdowner = Markdown()
 app.jinja_env.globals['render_markdown'] = markdowner.convert
-app.jinja_env.filters['nice_date'] = filters.nice_date
+app.jinja_env.filters['nice_date']       = filters.nice_date
+app.jinja_env.filters['trim_msg']        = filters.trim_msg
 
 #
 # Routes
@@ -118,12 +119,13 @@ def topic(topurl):
 
     res = db_session.query(Bulletin, BlockHead)\
             .join(BlockHead)\
+            .filter(Bulletin.topic == topic)\
             .order_by(desc(BlockHead.height))\
             .limit(25)\
             .all()
     bltns = [bltn for (bltn, _) in res]
 
-    return render_template('topic.html', headline=headline, topic=topic)
+    return render_template('topic.html', headline=headline, topic=topic, bltns=bltns)
 
 @app.route('/authors')
 def authors():

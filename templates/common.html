@@ -1,11 +1,44 @@
-{% macro render_bulletin(bltn) %}
-<div class="bltn">
-    <div class="head">
-        <h4>{{ bltn.topic }}</h4><p>Height: {{ bltn.block.height }}</p>
-    </div>
-    <div class="body">
-        {{ render_markdown(bltn.message) | safe }}
-    </div>
+{% macro render_author(address) %}
+<div class="addr">
+    <a href="{{ url_for('author', address=address) }}"><h5>{{ address[1:9] }}</h5></a>
+    <!-- Replace with function that generates -->
+    <svg class='box' width="15" height="15" >
+    <rect x="0" y="0" width="15" height="15" fill="purple"
+    fill-opacity="0.5" stroke-opacity="0.8"/> 
+    </svg>
 </div>
-
 {% endmacro %}
+
+{% macro render_bulletin(bltn, fullmsg) %}
+<div class="bltn"> 
+        <div class="head">
+            <a href="{{ url_for('topic', topurl=bltn.topic) }}"><h4 class="topic">{{ bltn.topic }}</h4></a>
+        </div>
+        <div class="below-head">
+            {{ render_author(bltn.author) }}
+            <div class="info">
+                {% if not bltn.block %}<p class="unconfd">Unconfirmed</p>
+                {% else %}<p>{{ bltn.block.height }}</p>
+                {% endif %}
+                <a href={{ url_for('bulletin', txid=bltn.txid) }}>
+                    <i class="glyphicon glyphicon-log-out"></i>
+                </a>
+                <a href="https://www.biteasy.com/testnet/transactions/{{ bltn.txid }}">
+                    <i class="glyphicon glyphicon-new-window"></i>
+                </a>
+            </div>
+        </div>
+        <div class="body">
+            {% if bltn.message != "" %}
+                {% if fullmsg %}
+                    {{ render_markdown(bltn.message) | safe }}
+                {% else %}
+                <p>{{ bltn.message | truncate(500) }}</p>
+                {% endif %}
+            {% else %}
+                <p class="empty">--- No Content ---</p>
+            {% endif %}
+        </div>
+</div>
+{% endmacro %}
+

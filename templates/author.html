@@ -8,8 +8,11 @@
     <h4>{{ author.name }} <small> Has published {{ author.num }} Bulletins</small></h4>
 </div>
 
+<div class="bltn-list list">
 {% for bltn in bltns %}
+<div class="item"><div class="nest msg">
     {{ render_bulletin(bltn) }}
+</div></div>
 {% endfor %}
 
 {% endblock content %}

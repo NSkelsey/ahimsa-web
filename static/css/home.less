@@ -1,6 +1,9 @@
 @import "../lib/bootstrap/less/bootstrap";
 
-@gray: #ddd;
+
+
+@gray: #999;
+@icon-font-path: '../lib/bootstrap/fonts/';
 
 body {
     margin-left: 10px;
@@ -97,14 +100,11 @@ h4 {
 }
 
 
-.list .empty {
-    border-radius: 5px;
-    height: 200px;
-    background-image: url("/static/img/empty-stripe.png");
-    background-repeat: repeat;
-    h4 {
-        padding-top: 80px;
-        text-align: center;
-        color: gray;
+.list {
+   margin-top: 20px;
+   .item {
+       margin-bottom: 15px;
+       .text-font();
     }
 }
+

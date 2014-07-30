@@ -3,14 +3,14 @@
 
 {% block content %}
 <div class="sub-head">
-    <h3>Topics <small>by popularity</small></h3>
+    <h3>Topics <small>By popularity</small></h3>
 </div>
 
 <div class="list">
     {% for topic in topics %} 
-    <div class="item topic-list">
+    <div class="item topic-list"><div class="nest">
         <a href="{{ url_for('topic', topurl=topic.title) }}">{{ topic.title }}</a>
-    </div>
+</div></div>
     {% endfor %}
 </div>
 {% endblock content %}
