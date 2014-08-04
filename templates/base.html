@@ -2,6 +2,7 @@
 <html lang="en">
     <head>
         <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
         {% assets "css" %}
         <link rel="stylesheet" href="{{ ASSET_URL }}">
         {% endassets %}
@@ -15,12 +16,12 @@
                 </div></div>
                 <div class="nav-bar">
                     <div class="nav-items">
-                    <a href="{{ url_for('authors') }}">Authors</a>
-                    <a href="{{ url_for('topics') }}">Topics</a>
-                    <a href="{{ url_for('blocks') }}">Blocks</a>
-                    <a href="{{ url_for('create') }}">Create</a>
-                    <a href="{{ url_for('about') }}">About</a>
-                </div>
+                        <a href="{{ url_for('authors') }}">Authors</a>
+                        <a href="{{ url_for('topics') }}">Topics</a>
+                        <a href="{{ url_for('blocks') }}">Blocks</a>
+                        <a class="no-mobile" href="{{ url_for('create') }}">Create</a>
+                        <a class="no-mobile" href="{{ url_for('about') }}">About</a>
+                    </div>
                 </div>
             </div>
 
@@ -33,6 +34,10 @@
         </div>
 
         {% assets "js_lib" %}
+        <script src="{{ ASSET_URL }}"></script>
+        {% endassets %}
+
+        {% assets "js" %}
         <script src="{{ ASSET_URL }}"></script>
         {% endassets %}
     </body>

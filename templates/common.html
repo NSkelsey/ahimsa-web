@@ -1,11 +1,6 @@
 {% macro render_author(address) %}
 <div class="addr">
     <a href="{{ url_for('author', address=address) }}"><h5>{{ address[1:9] }}</h5></a>
-    <!-- Replace with function that generates -->
-    <svg class='box' width="15" height="15" >
-    <rect x="0" y="0" width="15" height="15" fill="purple"
-    fill-opacity="0.5" stroke-opacity="0.8"/> 
-    </svg>
 </div>
 {% endmacro %}
 
@@ -41,4 +36,3 @@
         </div>
 </div>
 {% endmacro %}
-

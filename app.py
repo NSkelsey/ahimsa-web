@@ -19,9 +19,14 @@ app.wsgi_app = ProxyFix(app.wsgi_app)
 # Flask-Assets
 assets = Environment(app)
 
-js_files = ['lib/js/jquery.js', 'lib/bootstrap/dist/js/bootstrap.js']
+js_files = ['lib/js/jquery.js', 'lib/bootstrap/dist/js/bootstrap.js', 
+            'lib/js/d3.js', 'lib/js/md5.js']
 js = Bundle(*js_files, output='gen/js_lib.js')
 assets.register('js_lib', js)
+
+js_files = ['js/addrname.js', 'js/onload.js']
+js = Bundle(*js_files, output='gen/js_all.js')
+assets.register('js', js)
 
 less_files = ['css/home.less', 'css/bulletin.less']
 less = Bundle(*less_files, filters='less', output='gen/css_all.css')

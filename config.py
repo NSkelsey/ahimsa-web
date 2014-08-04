@@ -12,4 +12,4 @@ DB_NAME = "pubrecord.db"
 DB_PATH = os.path.join(AHIMSA_APP_DIR, DB_NAME)
 
 # Development related
-DEBUG   = False
+DEBUG   = True
