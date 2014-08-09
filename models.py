@@ -6,7 +6,7 @@ from sqlalchemy.ext.automap import automap_base
 from config import DB_PATH, DEBUG
 
 engine = create_engine('sqlite:///{}'.format(DB_PATH), 
-        echo=False)#echo=DEBUG)
+        echo=True)#echo=DEBUG)
 Base = automap_base()
 
 

@@ -7,7 +7,8 @@ from flask.ext.assets import Environment, Bundle, ManageAssets
 from flask.ext.script import Manager
 from werkzeug.contrib.fixers import ProxyFix
 from markdown2 import Markdown
-from sqlalchemy import func, desc
+from sqlalchemy import func, desc, and_, distinct
+from sqlalchemy.orm import joinedload
 
 import config, models, filters
 from config import DEBUG
@@ -30,7 +31,6 @@ js = Bundle(*js_files, output='gen/js_all.js')
 assets.register('js', js)
 
 less_files = ['/'.join(f.split('/')[1:]) for f in glob('static/css/*.less')]
-print less_files
 less = Bundle(*less_files, filters='less', output='gen/css_all.css')
 assets.register('css', less)
 
@@ -50,6 +50,7 @@ markdowner = Markdown()
 app.jinja_env.globals['render_markdown'] = markdowner.convert
 app.jinja_env.filters['nice_date']       = filters.nice_date
 app.jinja_env.filters['trim_msg']        = filters.trim_msg
+app.jinja_env.filters['topic_count']     = filters.topic_count
 
 #
 # Routes
@@ -93,21 +94,37 @@ def bulletin(txid):
 
 @app.route('/blocks')
 def blocks():
-    # return last 25 blocks
-    return render_template('blocks.html')
+    # return the last 50 blocks
+    blocks = db_session.query(BlockHead)\
+        .order_by(desc('blocks_height'))\
+        .options(joinedload('bulletin_collection'))\
+        .limit(50)\
+        .all()
 
-@app.route('/block/<string:blockhash>')
-def block(blockhash):
+    tip_h   = blocks[0].height
+    back_h  = blocks[-1].height
+    assert back_h == (tip_h - 49)
+    
+    return render_template('blocks.html', blocks=blocks)
+
+@app.route('/block/<string:hash>')
+def block(hash):
     # get all bulletins in block
+    block = BlockHead.query.filter_by(hash=hash)\
+        .options(joinedload('bulletin_collection'))\
+        .first()
+
+    if block is None:
+        abort(404)
     return render_template('block.html', block=block)
 
 @app.route('/topics')
 def topics():
     topics = db_session.query(func.count('*'), Bulletin.topic.label('title'))\
-                .group_by(Bulletin.topic)\
-                .order_by(desc('1'))\
-                .limit(25)\
-                .all()
+        .group_by(Bulletin.topic)\
+        .order_by(desc('1'))\
+        .limit(25)\
+        .all()
     return render_template('topics.html', topics=topics)
 
 @app.route('/topic/<string:topurl>')
@@ -163,6 +180,10 @@ def author(address):
 def runserver():
     app.run('0.0.0.0', debug=DEBUG)
 
+@manager.command
+def shell():
+    from IPython import embed
+    embed()
 
 if __name__ == '__main__':
     manager.run()

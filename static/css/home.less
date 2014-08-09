@@ -16,8 +16,7 @@
 
 @media (min-width: 1200px) {
     .container {
-        width: 970px;
-        background-color: gray;
+        width: 970px !important;
     }
 }
 
@@ -99,9 +98,16 @@ h4 {
 
 .list {
    margin-top: 20px;
+   .align();
    & > div {
        margin-bottom: 15px;
        .text-font();
     }
 }
 
+
+
+th.sm-num,
+td.sm-num {
+    text-align: center;
+}

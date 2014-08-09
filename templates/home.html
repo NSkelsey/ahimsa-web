@@ -14,9 +14,7 @@
 </div>
 <div class="bltn-list list">
     {% for bltn in confd_bltns %}
-    <div class="item"><div class="msg">
         {{ render_bulletin(bltn) }}
-    </div></div>
     {% endfor %}
 </div>
 {% endblock content %}

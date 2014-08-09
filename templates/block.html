@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% from 'common.html' import render_bulletin %} 
+
+{% block content %}
+
+<div class="sub-head">
+    <h3>Block <small>{{ block.hash }}</small></h3>
+</div>
+
+<div class="bltn-list list">
+{% for bltn in block.bulletin_collection %}
+<div class="item"><div class="nest msg">
+    {{ render_bulletin(bltn) }}
+</div></div>
+{% endfor %}
+
+{% endblock content %}
