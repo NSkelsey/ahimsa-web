@@ -1,4 +1,5 @@
 import urllib
+from glob import glob
 
 from flask import Flask, render_template, abort
 from flask.ext.sqlalchemy import SQLAlchemy
@@ -28,7 +29,8 @@ js_files = ['js/addrname.js', 'js/onload.js']
 js = Bundle(*js_files, output='gen/js_all.js')
 assets.register('js', js)
 
-less_files = ['css/home.less', 'css/bulletin.less']
+less_files = ['/'.join(f.split('/')[1:]) for f in glob('static/css/*.less')]
+print less_files
 less = Bundle(*less_files, filters='less', output='gen/css_all.css')
 assets.register('css', less)
 
@@ -78,7 +80,7 @@ def create():
 def about():
     return render_template('about.html')
 
-@app.route('/bltn/<string:txid>')
+@app.route('/bulletin/<string:txid>')
 def bulletin(txid):
     bltn = Bulletin.query.filter_by(txid=txid).limit(1).first()
     if bltn is None:

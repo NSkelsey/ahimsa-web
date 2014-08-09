@@ -2,7 +2,7 @@
 
 .bltn {
     .head {
-//        .make-row();
+        .make-row();
         .topic {
             .make-sm-column(6, 0);
             a {
@@ -12,7 +12,7 @@
         border-bottom: 1px solid #DDD;
     }
     .below-head {
-//       .make-row();
+        .make-row();
         .addr {
            .make-sm-column(6, 0);
            a {
@@ -40,14 +40,15 @@
            }
            i, p {
                display: inline;
-               margin-right: 10px;
+               margin-left: 10px;
                margin-top: 5px;
             }
         }
         
     }
    .body {
-  //     .make-row();
+       .make-row();
+       .make-sm-column(12, 0);
        margin-top: 10px;
        .empty {
            padding: 10 0 10 0;
@@ -69,22 +70,5 @@
             color: gray;
         }
     }
-    .item {
-        //.make-row();
-        .msg, .nest {
-            .make-xs-column(12, 0);
-            .make-sm-column-offset(3);
-            .make-sm-column(6, 0);
-        }
-        margin-bottom: 35px;
-    }
 }
 
-
-.single-bltn {
-    .make-row();
-    .nest {
-        .make-sm-column-offset(1);
-        .make-sm-column(10);
-    }
-}

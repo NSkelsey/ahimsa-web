@@ -1,14 +1,8 @@
 @import "../lib/bootstrap/less/bootstrap";
 
-
-
 @gray: #999;
 @icon-font-path: '../lib/bootstrap/fonts/';
-
-body {
-    margin-left: 10px;
-    margin-right: 10px;
-}
+@gutter: 30px;
 
 .text-font() {
     font-size: 16px;
@@ -19,16 +13,22 @@ body {
     font-weight: bold;
 }
 
-.grid-default() {
-    .make-sm-column-offset(1);
-    .make-sm-column(10, 0);
+
+@media (min-width: 1200px) {
+    .container {
+        width: 970px;
+        background-color: gray;
+    }
 }
 
-.mobile-layout() {
-    .make-row();
-    div.inner {
-        .grid-default();
-    }
+body {
+    margin-left:  (@gutter / 2) !important;
+    margin-right: (@gutter / 2) !important;
+}
+
+.align() {
+    margin-left:  (@gutter / -2);
+    margin-right: (@gutter / -2);
 }
 
 
@@ -36,7 +36,6 @@ div.top-bar {
     .title-line {
         .make-row();
         .wrap {
-           .grid-default();
             border-bottom: 2px black solid;
             margin-bottom: 7.5px;
         }
@@ -61,10 +60,9 @@ div.top-bar {
         }
     }
     // lower bar
-    .nav-bar {
+    .navi-bar {
         .make-row();
-        .nav-items {
-            .grid-default();
+        .navi-items {
             a {
                 color: #444;
                 margin-right: 20px;
@@ -79,13 +77,9 @@ div.top-bar {
     margin-bottom: 10px;
 }
 
-div.main {
-    .mobile-layout();
-}
-
 .sub-head {
-    margin-bottom: 15px;
-    border-bottom: 1px @gray dotted;  
+    .align();
+    border-bottom: 1px gray dotted;
     small {
         .hidden-xs();
         float: right;
@@ -105,7 +99,7 @@ h4 {
 
 .list {
    margin-top: 20px;
-   .item {
+   & > div {
        margin-bottom: 15px;
        .text-font();
     }
