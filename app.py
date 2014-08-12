@@ -31,7 +31,7 @@ js = Bundle(*js_files, output='gen/js_all.js')
 assets.register('js', js)
 
 less_files = ['/'.join(f.split('/')[1:]) for f in glob('static/css/*.less')]
-less = Bundle(*less_files, filters='less', output='gen/css_all.css')
+less = Bundle('css/app.less', filters='less', output='gen/css_all.css')
 assets.register('css', less)
 
 # Flask-Scripts
@@ -51,6 +51,7 @@ app.jinja_env.globals['render_markdown'] = markdowner.convert
 app.jinja_env.filters['nice_date']       = filters.nice_date
 app.jinja_env.filters['trim_msg']        = filters.trim_msg
 app.jinja_env.filters['topic_count']     = filters.topic_count
+app.jinja_env.filters['length_est']     = filters.length_est
 
 #
 # Routes

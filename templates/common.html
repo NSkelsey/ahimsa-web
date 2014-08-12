@@ -1,6 +1,6 @@
 {% macro render_author(address) %}
 <div class="addr">
-    <a href="{{ url_for('author', address=address) }}"><h5>{{ address[1:9] }}</h5></a>
+    <a href="{{ url_for('author', address=address) }}">{{ address[1:9] }}</a>
 </div>
 {% endmacro %}
 
@@ -13,7 +13,7 @@
             {{ render_author(bltn.author) }}
             <div class="info">
                 {% if not bltn.block %}<p class="unconfd">Unconfirmed</p>
-                {% else %}<p>{{ bltn.block.height }}</p>
+                {% else %}<p><a href="{{ url_for('block', hash=bltn.block.hash) }}">{{ bltn.block.height }}</p>
                 {% endif %}
                 <a href={{ url_for('bulletin', txid=bltn.txid) }}>
                     <i class="glyphicon glyphicon-log-out"></i>
@@ -35,4 +35,13 @@
             {% endif %}
         </div>
 </div>
+{% endmacro %}
+
+{% macro render_row_bltn(bltn) %}
+<tr>
+    <td class="author">{{ render_author(bltn.author) }}</td>
+    <td class="topic"><a href="{{ url_for("topic", topurl=bltn.topic) }}">{{ bltn.topic | truncate(30, true) }}</a></td>
+    <td class="txis"><a href="{{ url_for("bulletin", txid=bltn.txid) }}">{{ bltn.txid | truncate(30, true) }}</a></td>
+    <td class="len">{{ bltn.message | length_est }}</td>
+</tr>
 {% endmacro %}

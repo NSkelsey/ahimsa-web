@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from sqlalchemy import (Column, String, create_engine, Integer, ForeignKey)
 from sqlalchemy import orm
 from sqlalchemy.orm import sessionmaker, relationship, scoped_session
@@ -6,7 +8,7 @@ from sqlalchemy.ext.automap import automap_base
 from config import DB_PATH, DEBUG
 
 engine = create_engine('sqlite:///{}'.format(DB_PATH), 
-        echo=True)#echo=DEBUG)
+        echo=False)#echo=DEBUG)
 Base = automap_base()
 
 
@@ -53,6 +55,7 @@ class BlockHead(Base):
 
     hash      = Column(String, primary_key=True)
     height    = Column(Integer)
+    timestamp = Column(Integer)
     prevhash  = Column(String, ForeignKey('blocks.hash'))
     prevblock = relationship('BlockHead', uselist=False, single_parent=True)
 
@@ -60,6 +63,14 @@ class BlockHead(Base):
         t = trim(12)
         s = '<Blck: hash:{} height:{}>'
         return s.format(t(self.hash), self.height)
+
+    def datetime(self):
+        '''
+        Returns the reported datetime the block was created at.
+        '''
+        dt = datetime.fromtimestamp(self.timestamp)
+        return dt
+
 
 # We must introspect the db to properly build out our models
 Base.prepare(engine, reflect=True)

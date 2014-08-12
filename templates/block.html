@@ -1,18 +1,40 @@
 {% extends 'base.html' %}
 
-{% from 'common.html' import render_bulletin %} 
+{% from 'common.html' import render_row_bltn %} 
 
 {% block content %}
 
 <div class="sub-head">
-    <h3>Block <small>{{ block.hash }}</small></h3>
+    <h3>Block #{{ block.height }}<small>{{ block.hash }}</small></h3>
 </div>
 
-<div class="bltn-list list">
-{% for bltn in block.bulletin_collection %}
-<div class="item"><div class="nest msg">
-    {{ render_bulletin(bltn) }}
-</div></div>
-{% endfor %}
+
+{% with block = block %}
+    {% include 'partials/block-head.html' %}
+{% endwith %}
+
+<div class="sub-sub-head">
+    <h4>Bulletins Included</h4>
+</div>
+<div class="row">
+    <div class="block-bltns">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th class="author">Author</th>
+                    <th class="topic">Topic</th>
+                    <th class="txid">Txid</th>
+                    <th class="len">Message Len</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for bltn in block.bulletin_collection %}
+                {{ render_row_bltn(bltn) }}
+                {% else %}
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
 
 {% endblock content %}

@@ -1,0 +1,57 @@
+@import 'home';
+
+.block-head {
+    background-color: #eee;
+    border-radius: 4px;
+    margin-top: 30px;
+
+    .table {
+        margin-bottom: 30px;
+
+        tr.nbltns, 
+        tr.ntopics {
+            .hidden-xs();
+        }
+    }
+}
+
+.block-bltns {
+    .make-sm-column(12);
+    .table {
+        .len,
+        .topic {
+            .hidden-xs();
+        }
+        td.txid {
+            word-wrap: break-word;
+            overflow: hidden;
+        }
+
+        .len {
+            text-align: center;
+        }
+    }
+}
+
+.block-table {
+    margin-top: 30px;
+
+    @media (max-width: @screen-xs-max) { 
+        margin-right: (@gutter / -2); 
+        margin-left:  (@gutter / -2); 
+    }
+    .timestamp,
+    .hash,
+    .ntopics {
+        .hidden-xs();
+    }
+
+    .ntopics,
+    .nbltns {
+        text-align: center;
+    }
+    tbody tr:hover {
+        background-color: #eee;
+        cursor: pointer; cursor: hand;
+    }
+}

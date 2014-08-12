@@ -4,12 +4,18 @@
 @icon-font-path: '../lib/bootstrap/fonts/';
 @gutter: 30px;
 
+/* ====== Font Mixins ====== */
 .text-font() {
     font-size: 16px;
 }
 
 .sub-sub-head-font() {
     font-size: 18px;
+    font-weight: bold;
+}
+
+.status-font() {
+    font-size: 12px;
     font-weight: bold;
 }
 
@@ -34,34 +40,66 @@ body {
 div.top-bar {
     .title-line {
         .make-row();
-        .wrap {
-            border-bottom: 2px black solid;
-            margin-bottom: 7.5px;
-        }
-        h1 {
-            a {
-                color: black;
+        border-bottom: 2px black solid;
+        margin-bottom: 7.5px;
+        position: relative;
+        .logo {
+            .make-sm-column(10, 0);
+            h1 {
+                a {
+                    color: black;
+                }
+                display: inline-block;
+                text-decoration: None;
+                font-size: 30pt;
+                font-weight: 700;
             }
-            display: inline-block;
-            text-decoration: None;
-            font-size: 30pt;
-            font-weight: 700;
+            p.tag {
+                display: inline;
+                margin-left: 30px;
+                padding-bottom: 5px;
+                font-size: 14pt;
+                font-style: italic;
+                font-family: georgia;
+                // hide on mobile devices
+                .hidden-xs();
+            }
+
         }
-        p {
-            display: inline;
-            margin-left: 30px;
-            padding-bottom: 5px;
-            font-size: 14pt;
-            font-style: italic;
-            font-family: georgia;
-            // hide on mobile devices
+        .status {
+            .make-sm-column(2);
             .hidden-xs();
+
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            table {
+                padding: 0 10px 0 10px;
+                margin-bottom: 9px;
+                float: right;
+            } 
+            td {
+                .status-font();
+                padding: 0;
+                border-top: 0px;
+            }
+            td:nth-child(2) {
+                text-align: right;
+            }
+            .live {
+               color: #5ac23a; 
+            }
+            .dead {
+               color: red;
+            }
         }
+
     }
     // lower bar
     .navi-bar {
         .make-row();
         .navi-items {
+            .make-sm-column(12);
             a {
                 color: #444;
                 margin-right: 20px;
@@ -73,7 +111,7 @@ div.top-bar {
             }
         }
     }
-    margin-bottom: 10px;
+    margin-bottom: 25px;
 }
 
 .sub-head {
@@ -84,6 +122,16 @@ div.top-bar {
         float: right;
         margin-top: 10px;
     }
+}
+
+.sub-sub-head {
+    border-bottom: 1px gray dotted;
+    small {
+        .hidden-xs();
+        float: right;
+        margin-top: 10px;
+    }
+    margin-bottom: 20px;
 }
 
 
@@ -98,7 +146,7 @@ h4 {
 
 .list {
    margin-top: 20px;
-   .align();
+   //.align();
    & > div {
        margin-bottom: 15px;
        .text-font();
@@ -110,4 +158,19 @@ h4 {
 th.sm-num,
 td.sm-num {
     text-align: center;
+}
+
+
+.addr {
+    a {
+        display: inline-block;   
+        margin-right: 10px;
+        font-weight: bold;
+        font-size: 15px;
+        color: black;
+        font-family: Courier, monospace;
+    }
+    svg {
+        display: inline;
+    }
 }
