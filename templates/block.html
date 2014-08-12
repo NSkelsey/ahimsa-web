@@ -14,8 +14,9 @@
 {% endwith %}
 
 <div class="sub-sub-head">
-    <h4>Bulletins Included</h4>
+    <h4>Bulletins in Block</h4>
 </div>
+{% if block.bulletin_collection|count > 0 %}
 <div class="row">
     <div class="block-bltns">
         <table class="table">
@@ -28,13 +29,18 @@
                 </tr>
             </thead>
             <tbody>
-                {% for bltn in block.bulletin_collection %}
+            {% for bltn in block.bulletin_collection %}
                 {{ render_row_bltn(bltn) }}
-                {% else %}
-                {% endfor %}
+            {% endfor %}
             </tbody>
         </table>
     </div>
 </div>
+{% else %}
+<div class="empty-list">
+    <h4>There are no bulletins in this block.</h4>
+</div>
+{% endif %}
+
 
 {% endblock content %}

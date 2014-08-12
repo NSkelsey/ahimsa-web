@@ -95,16 +95,16 @@ def bulletin(txid):
 
 @app.route('/blocks')
 def blocks():
-    # return the last 50 blocks
+    # return the last 25 blocks
     blocks = db_session.query(BlockHead)\
         .order_by(desc('blocks_height'))\
         .options(joinedload('bulletin_collection'))\
-        .limit(50)\
+        .limit(25)\
         .all()
 
     tip_h   = blocks[0].height
     back_h  = blocks[-1].height
-    assert back_h == (tip_h - 49)
+    assert back_h == (tip_h - 24)
     
     return render_template('blocks.html', blocks=blocks)
 

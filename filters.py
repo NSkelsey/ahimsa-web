@@ -1,7 +1,7 @@
 from datetime import datetime
 
 def nice_date(date):
-    fmt = date.strftime("%b %d %Y, %-I:%M %p")
+    fmt = date.strftime("%H:%M  %b %d, %Y")
     fmt = fmt[:-2] + fmt[-2:].lower()
     return fmt
 
