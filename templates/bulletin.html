@@ -7,10 +7,10 @@
 <div class="sub-head">
     <h3>Bulletin <small>{{ bltn.txid }}</small></h3>
 </div>
-<div class="single-bltn">
-    <div class="nest">
-    {{ render_bulletin(bltn, true) }}
-    </div>
-</div>
+{% with bltn=bltn %}
+    {% include 'partials/bulletin.html' %}
+{% endwith %}
+
+{{ render_bulletin(bltn, fullmsg=true) }}
 
 {% endblock %}

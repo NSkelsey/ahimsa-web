@@ -42,6 +42,6 @@
     <td class="author">{{ render_author(bltn.author) }}</td>
     <td class="topic"><a href="{{ url_for("topic", topurl=bltn.topic) }}">{{ bltn.topic | truncate(30, true) }}</a></td>
     <td class="txis"><a href="{{ url_for("bulletin", txid=bltn.txid) }}">{{ bltn.txid | truncate(30, true) }}</a></td>
-    <td class="len">{{ bltn.message | length_est }}</td>
+    <td class="len">{{ bltn | nice_size_est }}</td>
 </tr>
 {% endmacro %}

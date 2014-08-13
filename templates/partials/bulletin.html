@@ -1,0 +1,10 @@
+<table class="table bulletin-meta">
+    <tbody>
+        <tr><td>Txid:</td><td>{{ bltn.txid }}</td></tr>
+        <tr><td>Block:</td><td><a href="{{ url_for('block', hash=bltn.block.hash) }}">{{ bltn.block.hash }}</a></td></tr>
+        <tr class="stored"><td>Bytes Stored:</td><td>{{ bltn | est_storage }} Bytes</td></tr>
+        <tr class="burned"><td>Satoshi Burned:</td><td>{{ bltn | est_burn }}</td></tr>
+        <tr class="version"><td>Version:</td><td>0.0.1</td></tr>
+    </tbody>
+</table>
+

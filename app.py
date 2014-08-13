@@ -1,4 +1,5 @@
 import urllib
+import inspect
 from glob import glob
 
 from flask import Flask, render_template, abort
@@ -48,10 +49,12 @@ def shutdown_session(exception=None):
 # jinja filters
 markdowner = Markdown()
 app.jinja_env.globals['render_markdown'] = markdowner.convert
-app.jinja_env.filters['nice_date']       = filters.nice_date
-app.jinja_env.filters['trim_msg']        = filters.trim_msg
-app.jinja_env.filters['topic_count']     = filters.topic_count
-app.jinja_env.filters['length_est']     = filters.length_est
+
+# Add all functions in filter.py to the jinja env.
+for name, obj in inspect.getmembers(filters):
+    if inspect.isfunction(obj):
+        app.jinja_env.filters[name] = obj
+        print name
 
 #
 # Routes
