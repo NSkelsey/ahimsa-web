@@ -12,13 +12,13 @@
         <div class="below-head">
             {{ render_author(bltn.author) }}
             <div class="info">
-                {% if not bltn.block %}<p class="unconfd">Unconfirmed</p>
-                {% else %}<p><a href="{{ url_for('block', hash=bltn.block.hash) }}">{{ bltn.block.height }}</p>
+                {% if not bltn.block %}<p class="hid unconfd">Unconfirmed</p>
+                {% else %}<p class="hid"><a href="{{ url_for('block', hash=bltn.block.hash) }}">{{ bltn.block.height }}</p>
                 {% endif %}
-                <a href={{ url_for('bulletin', txid=bltn.txid) }}>
+                <a class="" href={{ url_for('bulletin', txid=bltn.txid) }}>
                     <i class="glyphicon glyphicon-log-out"></i>
                 </a>
-                <a href="https://www.biteasy.com/testnet/transactions/{{ bltn.txid }}">
+                <a class="hid" href="https://www.biteasy.com/testnet/transactions/{{ bltn.txid }}">
                     <i class="glyphicon glyphicon-new-window"></i>
                 </a>
             </div>
@@ -41,7 +41,7 @@
 <tr>
     <td class="author">{{ render_author(bltn.author) }}</td>
     <td class="topic"><a href="{{ url_for("topic", topurl=bltn.topic) }}">{{ bltn.topic | truncate(30, true) }}</a></td>
-    <td class="txis"><a href="{{ url_for("bulletin", txid=bltn.txid) }}">{{ bltn.txid | truncate(30, true) }}</a></td>
+    <td class="txid"><a class="t" href="{{ url_for("bulletin", txid=bltn.txid) }}">{{ bltn.txid | truncate(30, true) }}</a></td>
     <td class="len">{{ bltn | nice_size_est }}</td>
 </tr>
 {% endmacro %}

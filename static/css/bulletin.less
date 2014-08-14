@@ -14,14 +14,16 @@
     .below-head {
         .make-row();
         .addr {
-           .make-sm-column(6, 0);
+           .make-xs-column(6, 0);
            margin-top: 5px;
            
         }
         .info {
            margin-top: 5px;
-           .hidden-xs();
-           .make-sm-column(6, 0);
+           .hid {
+               .hidden-xs();
+           }
+           .make-xs-column(6, 0);
            text-align: right;
            .text-font();
            color: gray;
