@@ -23,7 +23,7 @@ function addrname(selection) {
 }
 
 function colorAddr(address) {
-/* Takes a bitcoin address and returns a hsla() color, the hash algorithm used is 
+/* Takes a bitcoin address and returns a rgb() color, the hash algorithm used is 
  * MD5. We compress the output of MD5 even further to map it into the rgb colorspace.
  * The current function takes the md5 of the bitcoin address and maps the last 8 bits
  * of each word into values for red, green and blue.

@@ -15,15 +15,16 @@
                     <div class="logo">
                         <h1><a href="/">a<span>·</span>him<span>·</span>sa</a></h1><p class="tag">Spread The Truth</p>
                     </div>
+                    {% if daemon_status %}
                     <div class="status"> 
                         <table class="table">
                             <tbody>
-                                <tr><td>Network:</td><td >Testnet</td></tr>
-                                <tr><td>Peers:</td><td class="dead">42</td></tr>
-                                <tr><td>Status:</td><td class="live">Live</td></tr>
+                                <tr><td>ahimsad:</td><td class="live">{{ ahimsad_status | title }}</td></tr>
+                                <tr><td>bitcoind:</td><td class="live">{{ bitcoind_status | title }}</td></tr>
                             </tbody>
                         </table>
                     </div>
+                    {% endif %}
                 </div>
                 <div class="navi-bar">
                     <div class="navi-items">

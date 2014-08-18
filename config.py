@@ -1,4 +1,4 @@
-"""Application config"""
+'''Application config'''
 import os
 
 # Path related configuration
@@ -8,8 +8,19 @@ CURDIR         = os.path.abspath(os.curdir)
 AHIMSA_APP_DIR = os.path.join(__home__, '.ahimsa')
 
 # DB Constants
-DB_NAME = "pubrecord.db"
+DB_NAME = 'pubrecord.db'
 DB_PATH = os.path.join(AHIMSA_APP_DIR, DB_NAME)
+
+# Bitcoin Parameters
+NETWORK = 'TestNet3'
 
 # Development related
 DEBUG   = True
+
+
+
+# OPTIONAL bitcion RPC parameters
+
+RPC_USER = 'bitcoinrpc'
+RPC_PASS = 'EhxWGNKr1Z4LLqHtfwyQDemCRHF8gem843pnLj19K4go'
+RPC_PORT = 18332

@@ -11,8 +11,8 @@ from markdown2 import Markdown
 from sqlalchemy import func, desc, and_, distinct
 from sqlalchemy.orm import joinedload
 
-import config, models, filters
-from config import DEBUG
+import config, models, filters, btc_rpc
+from config import RPC_USER, RPC_PASS
 from models import Base, BlockHead, Bulletin, db_session
 
 app = Flask(__name__)
@@ -31,8 +31,8 @@ js_files = ['js/addrname.js', 'js/onload.js']
 js = Bundle(*js_files, output='gen/js_all.js')
 assets.register('js', js)
 
-less_files = ['/'.join(f.split('/')[1:]) for f in glob('static/css/*.less')]
-less = Bundle('css/app.less', filters='less', output='gen/css_all.css')
+less = Bundle('css/app.less', depends="css/*.less", 
+              filters='less', output='gen/css_all.css')
 assets.register('css', less)
 
 # Flask-Scripts
@@ -54,6 +54,22 @@ app.jinja_env.globals['render_markdown'] = markdowner.convert
 for name, obj in inspect.getmembers(filters):
     if inspect.isfunction(obj):
         app.jinja_env.filters[name] = obj
+
+# Add global variables to jinja2
+app.jinja_env.globals['daemon_status']  = False
+app.jinja_env.globals['bitcoind_peers'] = 0
+app.jinja_env.globals['bitcoind_status'] = 'Dead'
+app.jinja_env.globals['ahimsad_status'] = 'Dead'
+
+# launch status monitor if user has provided config
+if len(RPC_USER) > 0 and len(RPC_PASS) > 0:
+    app.jinja_env.globals['daemon_status'] = True
+    url = btc_rpc.url(RPC_USER, RPC_PASS, config.RPC_PORT)
+    proxy = btc_rpc.make_proxy(url)
+
+    # start refresh thread
+    btc_rpc.update_globals(proxy, app.jinja_env.globals)
+    
 
 #
 # Routes
@@ -108,6 +124,18 @@ def blocks():
     back_h  = blocks[-1].height
     assert back_h == (tip_h - 24)
     
+    return render_template('blocks.html', blocks=blocks)
+
+@app.route('/blocks/<int:height>')
+def height(height):
+    blocks = db_session.query(BlockHead)\
+        .order_by(desc('blocks_height'))\
+        .filter(and_(BlockHead.height <= height,
+                    BlockHead.height > height - 25))\
+        .all()
+
+    assert len(blocks) == 25
+
     return render_template('blocks.html', blocks=blocks)
 
 @app.route('/block/<string:hash>')
@@ -182,7 +210,7 @@ def author(address):
 
 @manager.command
 def runserver():
-    app.run('0.0.0.0', debug=DEBUG)
+    app.run('0.0.0.0', debug=config.DEBUG)
 
 @manager.command
 def shell():
