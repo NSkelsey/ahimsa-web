@@ -54,7 +54,6 @@ app.jinja_env.globals['render_markdown'] = markdowner.convert
 for name, obj in inspect.getmembers(filters):
     if inspect.isfunction(obj):
         app.jinja_env.filters[name] = obj
-        print name
 
 #
 # Routes
@@ -175,6 +174,7 @@ def author(address):
         .first()
     if author is None:
         abort(404)
+    # TODO fix sort order
     bltns = Bulletin.query\
             .filter(Bulletin.author==address)\
             .limit(25)
