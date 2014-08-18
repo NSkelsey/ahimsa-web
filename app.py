@@ -11,8 +11,7 @@ from markdown2 import Markdown
 from sqlalchemy import func, desc, and_, distinct
 from sqlalchemy.orm import joinedload
 
-import config, models, filters, btc_rpc
-from config import RPC_USER, RPC_PASS
+import config, models, filters, side_thread
 from models import Base, BlockHead, Bulletin, db_session
 
 app = Flask(__name__)
@@ -56,19 +55,11 @@ for name, obj in inspect.getmembers(filters):
         app.jinja_env.filters[name] = obj
 
 # Add global variables to jinja2
-app.jinja_env.globals['daemon_status']  = False
-app.jinja_env.globals['bitcoind_peers'] = 0
 app.jinja_env.globals['bitcoind_status'] = 'Dead'
 app.jinja_env.globals['ahimsad_status'] = 'Dead'
 
-# launch status monitor if user has provided config
-if len(RPC_USER) > 0 and len(RPC_PASS) > 0:
-    app.jinja_env.globals['daemon_status'] = True
-    url = btc_rpc.url(RPC_USER, RPC_PASS, config.RPC_PORT)
-    proxy = btc_rpc.make_proxy(url)
-
-    # start refresh thread
-    btc_rpc.update_globals(proxy, app.jinja_env.globals)
+# start refresh thread that checks daemon status occasionally
+side_thread.update_globals(app.jinja_env.globals)
     
 
 #

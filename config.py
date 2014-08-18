@@ -18,9 +18,3 @@ NETWORK = 'TestNet3'
 DEBUG   = True
 
 
-
-# OPTIONAL bitcion RPC parameters
-
-RPC_USER = 'bitcoinrpc'
-RPC_PASS = 'EhxWGNKr1Z4LLqHtfwyQDemCRHF8gem843pnLj19K4go'
-RPC_PORT = 18332
