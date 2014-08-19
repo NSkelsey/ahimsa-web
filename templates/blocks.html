@@ -5,6 +5,11 @@
 <div class="sub-head">
     <h3>Blocks <small>The last {{ blocks | count }} blocks</small></h3>
 </div>
+
+{% with day_browser = day_browser %}
+    {% include 'partials/block-date.html' %}
+{% endwith %}
+
 <table class="block-table table">
     <thead>
         <tr>

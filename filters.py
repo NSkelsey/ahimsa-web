@@ -1,5 +1,9 @@
 import math
-from datetime import datetime
+from datetime import datetime, timedelta
+
+from flask import url_for
+
+from config import BLK_DAY_STRF
 
 def nice_date(date):
     fmt = date.strftime("%H:%M  %b %d, %Y")
@@ -44,4 +48,100 @@ def est_burn(bltn):
     b = est_storage(bltn)
     addrs = b / 20.0
     return int(5460 * math.ceil(addrs))
+
+
+class DayBrowser():
+    '''
+    An object that spits out a html that lets us browse the blockchain by day
+    '''
+
+    def __init__(self, day, start):
+        '''
+        We have three pointers to relevant days which gives us the link configuration
+        '''
+        self.today = datetime.now().date()
+        self.day = day.date()
+        self.start = start.date()
+
+    def __back(date):
+        return date - timedelta(days=1)
+
+
+
+
+    def links(self):
+        '''
+        Deterimines the number of links needed and how to lay them out for maximimum
+        ease in browsing.
+        '''
+        
+        gap = timedelta(days=3)
+        a = '<a href="{}">{}</a>'
+        ah = '<a href="{}" class="active">{}</a>'
+     
+        lnk = lambda date: url_for('blocks_by_day', day_str=date.strftime(BLK_DAY_STRF))
+        nd = lambda date: date.strftime('%b %d, %Y')
+        back = lambda date: date - timedelta(days=1)
+        forward = lambda date: date + timedelta(days=1)
+
+        #links[-1] = a.format(lnk(self.start), nd(self.start))
+
+        next_btn = '<a href="{}"><span class="glyphicon glyphicon-chevron-left"></span></a>'
+        back_btn = '<a href="{}"><span class="glyphicon glyphicon-chevron-right"></span></a>'
+
+        skip_now = '<a href="{}"><span class="glyphicon glyphicon-backward"></span></a>'\
+                .format(lnk(self.today))
+        skip_gen = '<a href="{}"><span class="glyphicon glyphicon-forward"></span></a>'\
+                .format(lnk(self.start))
+
+        links = []
+
+        if (self.day - self.start) < gap:
+            # day is within gap distance of the genesis block
+            days = [
+                 forward(forward(self.start)),
+                 forward(self.start),
+                 self.start
+             ]
+            links = [
+                skip_now,
+                next_btn.format(lnk(days[0])),
+                a.format(lnk(days[0]), nd(days[0])),
+                a.format(lnk(days[1]), nd(days[1])),
+                a.format(lnk(days[2]), nd(days[2])),
+            ]
+
+        elif (self.today - self.day) > gap:
+            # day is within gap of today
+            days = [
+                self.today,
+                back(self.today),
+                back(back(self.today)),
+            ]
+            links = [
+                a.format(lnk(days[0]), "Today"),
+                a.format(lnk(days[1]), "Yesterday"),
+                a.format(lnk(days[2]), nd(days[2])),
+                back_btn.format(lnk(days[2])),
+                skip_gen
+            ]
+
+        else:
+            # day is somewhere in the middle
+            days = [
+                forward(self.day),
+                self.day,
+                back(self.day),
+            ]
+            links = [
+                skip_now,
+                next_btn.format(lnk(days[0])),
+                a.format(lnk(days[0]), nd(days[0])),
+                ah.format(lnk(days[1]), nd(days[1])),
+                a.format(lnk(days[2]), nd(days[2])),
+                back_btn.format(lnk(days[2])),
+                skip_gen,
+            ]
+
+        return '\n'.join(links)
 

@@ -17,4 +17,4 @@ NETWORK = 'TestNet3'
 # Development related
 DEBUG   = True
 
-
+BLK_DAY_STRF = '%Y-%m-%d' 

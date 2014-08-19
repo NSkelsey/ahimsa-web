@@ -1,5 +1,7 @@
-import urllib
+import calendar
 import inspect
+import urllib
+from datetime import date, datetime
 from glob import glob
 
 from flask import Flask, render_template, abort
@@ -12,7 +14,9 @@ from sqlalchemy import func, desc, and_, distinct
 from sqlalchemy.orm import joinedload
 
 import config, models, filters, side_thread
+from config import BLK_DAY_STRF
 from models import Base, BlockHead, Bulletin, db_session
+from filters import DayBrowser
 
 app = Flask(__name__)
 app.config.from_object(config)
@@ -59,8 +63,11 @@ app.jinja_env.globals['bitcoind_status'] = 'Dead'
 app.jinja_env.globals['ahimsad_status'] = 'Dead'
 
 # start refresh thread that checks daemon status occasionally
-side_thread.update_globals(app.jinja_env.globals)
-    
+#side_thread.update_globals(app.jinja_env.globals)
+
+# Find the day of the first block was created
+GENESIS_BLK = BlockHead.query.filter(BlockHead.height==0).first()
+
 
 #
 # Routes
@@ -128,6 +135,35 @@ def height(height):
     assert len(blocks) == 25
 
     return render_template('blocks.html', blocks=blocks)
+
+@app.route('/blocks/<string:day_str>')
+def blocks_by_day(day_str):
+
+    day = datetime.strptime(day_str, BLK_DAY_STRF)
+    i = calendar.timegm(day.timetuple())
+
+    if day > datetime.now():
+        abort(404)
+
+    last_block = db_session.query(BlockHead)\
+        .order_by(desc('blocks_height'))\
+        .filter(BlockHead.timestamp < i)\
+        .first()
+
+    blocks = []
+
+    if last_block is not None: 
+        blocks = db_session.query(BlockHead)\
+            .order_by(desc('blocks_height'))\
+            .filter(and_(BlockHead.timestamp < i + 86400,
+                         BlockHead.timestamp > i))\
+            .options(joinedload('bulletin_collection'))\
+            .all()
+
+    day_browser = DayBrowser(day, start=GENESIS_BLK.datetime())
+
+    return render_template('blocks.html', blocks=blocks, day_browser=day_browser)
+
 
 @app.route('/block/<string:hash>')
 def block(hash):
