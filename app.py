@@ -4,7 +4,7 @@ import urllib
 from datetime import date, datetime
 from glob import glob
 
-from flask import Flask, render_template, abort
+from flask import Flask, render_template, abort, request, url_for, redirect
 from flask.ext.sqlalchemy import SQLAlchemy
 from flask.ext.assets import Environment, Bundle, ManageAssets
 from flask.ext.script import Manager
@@ -30,7 +30,7 @@ js_files = ['lib/js/jquery.js', 'lib/bootstrap/dist/js/bootstrap.js',
 js = Bundle(*js_files, output='gen/js_lib.js')
 assets.register('js_lib', js)
 
-js_files = ['js/addrname.js', 'js/onload.js']
+js_files = ['/'.join(f.split('/')[1:]) for f in glob('static/js/*.js')]
 js = Bundle(*js_files, output='gen/js_all.js')
 assets.register('js', js)
 
@@ -111,25 +111,20 @@ def bulletin(txid):
 
 @app.route('/blocks')
 def blocks():
-    # return the last 25 blocks
-    blocks = db_session.query(BlockHead)\
-        .order_by(desc('blocks_height'))\
-        .options(joinedload('bulletin_collection'))\
-        .limit(25)\
-        .all()
-
-    tip_h   = blocks[0].height
-    back_h  = blocks[-1].height
-    assert back_h == (tip_h - 24)
+    '''
+    Redirect to todays blocks
+    '''
+    today = datetime.now().date()
+    return redirect(url_for('blocks_by_day', 
+                    day_str=today.strftime(BLK_DAY_STRF)))
     
-    return render_template('blocks.html', blocks=blocks)
 
 @app.route('/blocks/<int:height>')
 def height(height):
     blocks = db_session.query(BlockHead)\
         .order_by(desc('blocks_height'))\
         .filter(and_(BlockHead.height <= height,
-                    BlockHead.height > height - 25))\
+                     BlockHead.height > height - 25))\
         .all()
 
     assert len(blocks) == 25
@@ -142,7 +137,7 @@ def blocks_by_day(day_str):
     day = datetime.strptime(day_str, BLK_DAY_STRF)
     i = calendar.timegm(day.timetuple())
 
-    if day > datetime.now():
+    if day.date() > datetime.now().date():
         abort(404)
 
     last_block = db_session.query(BlockHead)\
@@ -153,16 +148,27 @@ def blocks_by_day(day_str):
     blocks = []
 
     if last_block is not None: 
-        blocks = db_session.query(BlockHead)\
+        '''
+        To speed up this query we are eventually going to have to index the db on
+        day of timestamp. Either we do this or load it all into memory...
+        '''
+        day_query = db_session.query(BlockHead)\
             .order_by(desc('blocks_height'))\
-            .filter(and_(BlockHead.timestamp < i + 86400,
-                         BlockHead.timestamp > i))\
-            .options(joinedload('bulletin_collection'))\
-            .all()
+            .filter(and_(BlockHead.timestamp < i + 86400, # A single day in seconds
+                         BlockHead.timestamp > i))
+        if 'all' in request.args:
+            blocks = day_query.options(joinedload('bulletin_collection')).all()
+        else: 
+            blocks = day_query.join(Bulletin)\
+                .group_by(BlockHead)\
+                .all()
 
     day_browser = DayBrowser(day, start=GENESIS_BLK.datetime())
 
-    return render_template('blocks.html', blocks=blocks, day_browser=day_browser)
+    return render_template('blocks.html', 
+                            blocks=blocks, 
+                            day_browser=day_browser,
+                            sort="By Date")
 
 
 @app.route('/block/<string:hash>')

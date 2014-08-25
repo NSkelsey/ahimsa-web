@@ -10,6 +10,10 @@ def nice_date(date):
     fmt = fmt[:-2] + fmt[-2:].lower()
     return fmt
 
+def todays_blocks(_):
+    today = datetime.now().date()
+    return url_for('blocks_by_day', day_str=today.strftime(BLK_DAY_STRF))
+
 def trim_msg(msg):
     if len(msg) > 500:
        pass
@@ -67,6 +71,18 @@ class DayBrowser():
         return date - timedelta(days=1)
 
 
+    def render_link(self, day, label):
+        a = '<a href="{}">{}</a>'
+        ah = '<a href="{}" class="active">{}</a>'
+     
+        lnk = lambda date: url_for('blocks_by_day', day_str=date.strftime(BLK_DAY_STRF))
+
+        l = ""
+        if self.day == day:
+            l = ah.format(lnk(day), label)
+        else: 
+            l = a.format(lnk(day), label)
+        return l
 
 
     def links(self):
@@ -75,7 +91,7 @@ class DayBrowser():
         ease in browsing.
         '''
         
-        gap = timedelta(days=3)
+        gap = timedelta(days=2)
         a = '<a href="{}">{}</a>'
         ah = '<a href="{}" class="active">{}</a>'
      
@@ -102,27 +118,29 @@ class DayBrowser():
                  forward(forward(self.start)),
                  forward(self.start),
                  self.start
-             ]
+            ]
+            idx = days.index(self.day)
             links = [
                 skip_now,
-                next_btn.format(lnk(days[0])),
+                next_btn.format(lnk(days[idx-1])),
                 a.format(lnk(days[0]), nd(days[0])),
-                a.format(lnk(days[1]), nd(days[1])),
-                a.format(lnk(days[2]), nd(days[2])),
+                self.render_link(days[1], nd(days[1])),
+                self.render_link(days[2], nd(days[2])),
             ]
 
-        elif (self.today - self.day) > gap:
+        elif (self.today - self.day) < gap:
             # day is within gap of today
             days = [
                 self.today,
                 back(self.today),
                 back(back(self.today)),
             ]
+            idx = days.index(self.day)
             links = [
-                a.format(lnk(days[0]), "Today"),
-                a.format(lnk(days[1]), "Yesterday"),
+                self.render_link(days[0], "Today"),
+                self.render_link(days[1], "Yesterday"),
                 a.format(lnk(days[2]), nd(days[2])),
-                back_btn.format(lnk(days[2])),
+                back_btn.format(lnk(days[idx+1])),
                 skip_gen
             ]
 

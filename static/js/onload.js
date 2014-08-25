@@ -2,6 +2,7 @@ function onload() {
     /* Executes when the page has fully loaded and we are ready to add custom JS.
     * Currently this function:
     *  - Styles addressses with colors
+    *  - Detects mobile viewports and trims long unbroken strings marked with class t
     *
     * */
     d3.selectAll('.addr')[0].forEach(function(elem) {
@@ -27,6 +28,3 @@ function onload() {
 
 }
 $(document).ready(onload);
-
-
-

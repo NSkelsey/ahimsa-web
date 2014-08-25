@@ -65,3 +65,69 @@
         background-color: #DDD;
     }
 }
+
+
+.blocks-head {
+    .make-row();
+    h3.head {
+        background-color: white;
+        display: inline-block;
+        .make-xs-column(1);
+    }
+    div.sort {
+        .make-xs-column(8);
+        background-color: white;
+        margin-top: 26px;
+        position: relative;
+        a {
+            .small-gray-font();
+            padding: 0 10px 0 10px;
+        }
+        a.sort {
+            padding: 0 5px 0 10px;
+        }
+        a.expand-btn {
+            background-color: white;
+            padding: 0;
+            span {
+                color: @gray;
+            }
+        }
+        div.card {
+            position: absolute;
+            display: inline;
+            left: -50px;
+            z-index: -9000;
+        }
+    } 
+    h3.note {
+        .make-xs-column(3);
+    }
+}
+
+a.expand-btn,
+a.expand-btn:hover,
+a.expand-btn:hover + div.card {
+    color: purple;
+   -webkit-animation-duration: 1s; 
+   -webkit-animation-name: slideout;
+}
+
+.rule() {
+    from {
+       left: -100%; 
+       height: 0%;
+    }
+
+    to {
+       left: 0%; 
+       height: 100%;
+    }
+}
+
+@keyframes slideout {
+    .rule;
+}
+@-webkit-keyframes slideout {
+   .rule; 
+}
