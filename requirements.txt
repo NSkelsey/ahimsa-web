@@ -12,3 +12,4 @@ itsdangerous==0.24
 markdown2==2.2.1
 webassets==0.10.1
 wsgiref==0.1.2
+psutil==2.1.1
