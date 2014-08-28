@@ -63,7 +63,7 @@ app.jinja_env.globals['bitcoind_status'] = 'Dead'
 app.jinja_env.globals['ahimsad_status'] = 'Dead'
 
 # start refresh thread that checks daemon status occasionally
-#side_thread.update_globals(app.jinja_env.globals)
+side_thread.update_globals(app.jinja_env.globals)
 
 # Find the day of the first block was created
 GENESIS_BLK = BlockHead.query.filter(BlockHead.height==0).first()

@@ -1,3 +1,4 @@
+import os, sys
 from datetime import datetime
 
 from sqlalchemy import (Column, String, create_engine, Integer, ForeignKey)
@@ -71,6 +72,12 @@ class BlockHead(Base):
         dt = datetime.fromtimestamp(self.timestamp)
         return dt
 
+
+# Assert that the DB exists
+if not (os.path.isfile(DB_PATH) and os.access(PATH, os.R_OK)):
+    print "Cannot access the database please check that the file: %s has been created"\
+            % DB_PATH
+    sys.exit(1)
 
 # We must introspect the db to properly build out our models
 Base.prepare(engine, reflect=True)
