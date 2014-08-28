@@ -77,10 +77,10 @@ div.top-bar {
             .make-sm-column(2, 0);
             .hidden-xs();
             table { width: 65%; }
-
             position: absolute;
             bottom: 0;
             right: 0;
+
             table {
                 padding: 0 10px 0 10px;
                 margin-bottom: 9px;
@@ -90,14 +90,17 @@ div.top-bar {
                 .status-font();
                 padding: 0;
                 border-top: 0px;
+
+                a { 
+                    color: #5ac23a; 
+                }
+
+                &:nth-child(2) {
+                    text-align: right;
+                }
             }
-            td:nth-child(2) {
-                text-align: right;
-            }
-            .live {
-               color: #5ac23a; 
-            }
-            .dead {
+
+            .Dead {
                color: red;
             }
         }
