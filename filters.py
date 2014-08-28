@@ -12,7 +12,7 @@ def nice_date(date):
 
 def todays_blocks(_):
     today = datetime.now().date()
-    return url_for('blocks_by_day', day_str=today.strftime(BLK_DAY_STRF))
+    return url_for('blocks_by_day', day_str=today.strftime(BLK_DAY_STRF), blks='w/bltns')
 
 def trim_msg(msg):
     if len(msg) > 500:
@@ -59,23 +59,45 @@ class DayBrowser():
     An object that spits out a html that lets us browse the blockchain by day
     '''
 
-    def __init__(self, day, start):
+    def __init__(self, day, start, show_all):
         '''
         We have three pointers to relevant days which gives us the link configuration
         '''
         self.today = datetime.now().date()
-        self.day = day.date()
+        self.day = day
         self.start = start.date()
+        self.show_all = show_all
 
-    def __back(date):
-        return date - timedelta(days=1)
+    def self_link(self, show_all=False):
+        '''
+        Returns a url to view the current day with all blocks displayed or not
+        '''
+        if show_all:
+            return url_for('blocks_by_day', 
+                           day_str=self.day.strftime(BLK_DAY_STRF),
+                           blks='all')
+        else:
+            return url_for('blocks_by_day',
+                           day_str=self.day.strftime(BLK_DAY_STRF),
+                           blks='w/bltns')
+
+    def _gen_lnk(self):
+        '''
+        Generates the function used to generate date links
+        '''
+        lnk = lambda date: url_for('blocks_by_day', day_str=date.strftime(BLK_DAY_STRF))
+        if self.show_all:
+            lnk = lambda date: url_for('blocks_by_day', 
+                                       day_str=date.strftime(BLK_DAY_STRF),
+                                       blks='all')
+        return lnk
 
 
     def render_link(self, day, label):
         a = '<a href="{}">{}</a>'
         ah = '<a href="{}" class="active">{}</a>'
      
-        lnk = lambda date: url_for('blocks_by_day', day_str=date.strftime(BLK_DAY_STRF))
+        lnk = self._gen_lnk()
 
         l = ""
         if self.day == day:
@@ -95,12 +117,12 @@ class DayBrowser():
         a = '<a href="{}">{}</a>'
         ah = '<a href="{}" class="active">{}</a>'
      
-        lnk = lambda date: url_for('blocks_by_day', day_str=date.strftime(BLK_DAY_STRF))
+        lnk = self._gen_lnk()
+
+        # nice date formatting
         nd = lambda date: date.strftime('%b %d, %Y')
         back = lambda date: date - timedelta(days=1)
         forward = lambda date: date + timedelta(days=1)
-
-        #links[-1] = a.format(lnk(self.start), nd(self.start))
 
         next_btn = '<a href="{}"><span class="glyphicon glyphicon-chevron-left"></span></a>'
         back_btn = '<a href="{}"><span class="glyphicon glyphicon-chevron-right"></span></a>'

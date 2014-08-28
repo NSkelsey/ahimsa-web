@@ -68,7 +68,6 @@ app.jinja_env.globals['ahimsad_status'] = 'Dead'
 # Find the day of the first block was created
 GENESIS_BLK = BlockHead.query.filter(BlockHead.height==0).first()
 
-
 #
 # Routes
 #
@@ -131,39 +130,38 @@ def height(height):
 
     return render_template('blocks.html', blocks=blocks)
 
-@app.route('/blocks/<string:day_str>')
-def blocks_by_day(day_str):
+@app.route('/blocks/<string:day_str>/', defaults={'blks': 'w/bltns'})
+@app.route('/blocks/<string:day_str>/<string:blks>')
+def blocks_by_day(day_str, blks):
 
-    day = datetime.strptime(day_str, BLK_DAY_STRF)
+    day = datetime.strptime(day_str, BLK_DAY_STRF).date()
     i = calendar.timegm(day.timetuple())
 
-    if day.date() > datetime.now().date():
+    if day > datetime.now().date() or day < GENESIS_BLK.datetime().date():
         abort(404)
 
-    last_block = db_session.query(BlockHead)\
+
+    show_all_blks = False
+    if blks == 'all':
+        show_all_blks = True
+
+    # To speed up this query we are eventually going to have to index the db on
+    # day of timestamp. Either we do this or load it all into memory...
+    day_query = BlockHead.query\
         .order_by(desc('blocks_height'))\
-        .filter(BlockHead.timestamp < i)\
-        .first()
-
+        .filter(and_(BlockHead.timestamp < i + 86400, # A single day in seconds
+                     BlockHead.timestamp > i))
     blocks = []
+    if show_all_blks:
+        blocks = day_query.options(joinedload('bulletin_collection')).all()
+    else: 
+        blocks = day_query.join(Bulletin)\
+            .group_by(BlockHead)\
+            .all()
 
-    if last_block is not None: 
-        '''
-        To speed up this query we are eventually going to have to index the db on
-        day of timestamp. Either we do this or load it all into memory...
-        '''
-        day_query = db_session.query(BlockHead)\
-            .order_by(desc('blocks_height'))\
-            .filter(and_(BlockHead.timestamp < i + 86400, # A single day in seconds
-                         BlockHead.timestamp > i))
-        if 'all' in request.args:
-            blocks = day_query.options(joinedload('bulletin_collection')).all()
-        else: 
-            blocks = day_query.join(Bulletin)\
-                .group_by(BlockHead)\
-                .all()
-
-    day_browser = DayBrowser(day, start=GENESIS_BLK.datetime())
+    day_browser = DayBrowser(day, 
+                             start=GENESIS_BLK.datetime(), 
+                             show_all=show_all_blks)
 
     return render_template('blocks.html', 
                             blocks=blocks, 
