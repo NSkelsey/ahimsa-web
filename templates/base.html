@@ -18,8 +18,8 @@
                     <div class="status"> 
                         <table class="table">
                             <tbody>
-                                <tr><td>ahimsad:</td><td class="live">{{ ahimsad_status | title }}</td></tr>
-                                <tr><td>bitcoind:</td><td class="live">{{ bitcoind_status | title }}</td></tr>
+                                <tr><td>ahimsad:</td><td class="{{ ahimsad_status }}">{{ ahimsad_status | title }}</td></tr>
+                                <tr><td>bitcoind:</td><td class="{{ bitcoind_status }}">{{ bitcoind_status | title }}</td></tr>
                             </tbody>
                         </table>
                     </div>
