@@ -63,7 +63,7 @@ app.jinja_env.globals['bitcoind_status'] = 'Dead'
 app.jinja_env.globals['ahimsad_status'] = 'Dead'
 
 # start refresh thread that checks daemon status occasionally
-side_thread.update_globals(app.jinja_env.globals)
+#side_thread.update_globals(app.jinja_env.globals)
 
 # Find the day of the first block was created
 GENESIS_BLK = BlockHead.query.filter(BlockHead.height==0).first()
@@ -148,7 +148,7 @@ def blocks_by_day(day_str, blks):
     # To speed up this query we are eventually going to have to index the db on
     # day of timestamp. Either we do this or load it all into memory...
     day_query = BlockHead.query\
-        .order_by(desc('blocks_height'))\
+        .order_by('blocks_height')\
         .filter(and_(BlockHead.timestamp < i + 86400, # A single day in seconds
                      BlockHead.timestamp > i))
     blocks = []

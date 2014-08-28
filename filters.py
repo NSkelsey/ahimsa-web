@@ -124,12 +124,12 @@ class DayBrowser():
         back = lambda date: date - timedelta(days=1)
         forward = lambda date: date + timedelta(days=1)
 
-        next_btn = '<a href="{}"><span class="glyphicon glyphicon-chevron-left"></span></a>'
-        back_btn = '<a href="{}"><span class="glyphicon glyphicon-chevron-right"></span></a>'
+        next_btn = '<a href="{}"><span class="glyphicon glyphicon-chevron-right"></span></a>'
+        back_btn = '<a href="{}"><span class="glyphicon glyphicon-chevron-left"></span></a>'
 
-        skip_now = '<a href="{}"><span class="glyphicon glyphicon-backward"></span></a>'\
+        skip_now = '<a href="{}"><span class="glyphicon glyphicon-forward"></span></a>'\
                 .format(lnk(self.today))
-        skip_gen = '<a href="{}"><span class="glyphicon glyphicon-forward"></span></a>'\
+        skip_gen = '<a href="{}"><span class="glyphicon glyphicon-backward"></span></a>'\
                 .format(lnk(self.start))
 
         links = []
@@ -137,50 +137,50 @@ class DayBrowser():
         if (self.day - self.start) < gap:
             # day is within gap distance of the genesis block
             days = [
-                 forward(forward(self.start)),
+                 self.start,
                  forward(self.start),
-                 self.start
+                 forward(forward(self.start)),
             ]
             idx = days.index(self.day)
             links = [
-                skip_now,
-                next_btn.format(lnk(days[idx-1])),
-                a.format(lnk(days[0]), nd(days[0])),
+                self.render_link(days[0], nd(days[0])),
                 self.render_link(days[1], nd(days[1])),
-                self.render_link(days[2], nd(days[2])),
+                a.format(lnk(days[2]), nd(days[2])),
+                next_btn.format(lnk(days[idx+1])),
+                skip_now,
             ]
 
         elif (self.today - self.day) < gap:
             # day is within gap of today
             days = [
-                self.today,
-                back(self.today),
                 back(back(self.today)),
+                back(self.today),
+                self.today,
             ]
             idx = days.index(self.day)
             links = [
-                self.render_link(days[0], "Today"),
+                skip_gen,
+                back_btn.format(lnk(days[idx-1])),
+                a.format(lnk(days[0]), nd(days[0])),
                 self.render_link(days[1], "Yesterday"),
-                a.format(lnk(days[2]), nd(days[2])),
-                back_btn.format(lnk(days[idx+1])),
-                skip_gen
+                self.render_link(days[2], "Today"),
             ]
 
         else:
             # day is somewhere in the middle
             days = [
-                forward(self.day),
-                self.day,
                 back(self.day),
+                self.day,
+                forward(self.day),
             ]
             links = [
-                skip_now,
-                next_btn.format(lnk(days[0])),
+                skip_gen,
+                back_btn.format(lnk(days[0])),
                 a.format(lnk(days[0]), nd(days[0])),
                 ah.format(lnk(days[1]), nd(days[1])),
                 a.format(lnk(days[2]), nd(days[2])),
-                back_btn.format(lnk(days[2])),
-                skip_gen,
+                next_btn.format(lnk(days[2])),
+                skip_now,
             ]
 
         return '\n'.join(links)

@@ -74,7 +74,7 @@ class BlockHead(Base):
 
 
 # Assert that the DB exists
-if not (os.path.isfile(DB_PATH) and os.access(PATH, os.R_OK)):
+if not (os.path.isfile(DB_PATH) and os.access(DB_PATH, os.R_OK)):
     print "Cannot access the database please check that the file: %s has been created"\
             % DB_PATH
     sys.exit(1)
