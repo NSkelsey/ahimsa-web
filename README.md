@@ -8,7 +8,7 @@ Web frontend for messages stored in the blockchain.
 Installation
 ======
 You must first have ahimsad running on your machine otherwise running this service
-is pointless. Follow the instructions [here](https://github.com/NSkelsey/ahimsad/blob/master/README.md')
+is pointless. Follow the instructions [here](https://github.com/NSkelsey/ahimsad/blob/master/README.md#installing)
  to get that installed.
 
 ```bash
