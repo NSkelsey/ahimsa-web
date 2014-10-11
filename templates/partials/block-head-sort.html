@@ -1,0 +1,19 @@
+<div class="sub-head blocks-head">
+    <h3 class="head">Blocks</h3>
+    <div class="sort">
+        <a class="sort">{{ sort }}</a>
+        {% if day_browser.show_all %}
+        <a class="expand-btn" href="{{ day_browser.self_link() }}">
+            hide<span class="glyphicon glyphicon-expand"></span>
+        </a>
+        {% else %}
+        <a class="expand-btn" href="{{ day_browser.self_link(show_all=True) }}">
+            show all
+           <span class="glyphicon glyphicon-collapse-down"></span>
+        </a>
+        {% endif %}
+    </div>
+    <h3>
+        <small>Found {{ blocks | count }} {% if blocks | count == 1 %}block{% else %}blocks{% endif %}</small>
+    </h3>
+</div>

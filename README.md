@@ -13,6 +13,7 @@ is pointless. Follow the instructions [here](https://github.com/NSkelsey/ahimsad
 
 ```bash
 git clone https://github.com/NSkelsey/ahimsa-web && cd ahimsa-web
+git submodule update --init --recursive
 easy_install pip
 pip install -r requirements.txt
 python app.py
