@@ -26,7 +26,7 @@ class Bulletin(Base):
 
     txid        = Column(String, primary_key=True)
     author      = Column(String, nullable=False)
-    topic       = Column(String, default='')
+    topic       = Column('board', String, default='')
     message     = Column(String, default='')
     blockhash   = Column(String, ForeignKey('blocks.hash'), name="block")
     block       = relationship('BlockHead', uselist=False)
