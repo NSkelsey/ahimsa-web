@@ -28,6 +28,7 @@ class Bulletin(Base):
     author      = Column(String, nullable=False)
     topic       = Column('board', String, default='')
     message     = Column(String, default='')
+    timestamp   = Column(Integer)
     blockhash   = Column(String, ForeignKey('blocks.hash'), name="block")
     block       = relationship('BlockHead', uselist=False)
 
