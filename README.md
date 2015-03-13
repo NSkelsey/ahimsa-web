@@ -12,9 +12,17 @@ is pointless. Follow the instructions [here](https://github.com/NSkelsey/ahimsad
  to get that installed.
 
 ```bash
-git clone https://github.com/NSkelsey/ahimsa-web && cd ahimsa-web
-git submodule update --init --recursive
-easy_install pip
-pip install -r requirements.txt
-python app.py
+> git clone https://github.com/NSkelsey/ahimsa-web && cd ahimsa-web
+> git submodule update --init --recursive
+> easy_install pip
+> pip install -r requirements.txt
+> python app.py
+```
+
+##Running with Virtual Env
+
+Make sure your session is active!
+
+```bash
+> source venv/bin/activate
 ```
