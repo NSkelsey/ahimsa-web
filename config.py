@@ -5,11 +5,13 @@ import os
 __home__ = os.path.expanduser('~')
 
 CURDIR         = os.path.abspath(os.curdir)
-AHIMSA_APP_DIR = os.path.join(__home__, '.ahimsa')
+#AHIMSA_APP_DIR = os.path.join(__home__, '.ahimsa')
+#OMBUDS_APP_DIR = os.path.join(__home__, 'Library/Application Support/Ombudscore/node')
 
 # DB Constants
 DB_NAME = 'pubrecord.db'
-DB_PATH = os.path.join(AHIMSA_APP_DIR, DB_NAME)
+#DB_PATH = os.path.join(OMBUDS_APP_DIR, DB_NAME)
+DB_PATH = os.path.join('./', 'test.db')
 
 # Bitcoin Parameters
 NETWORK = 'TestNet3'

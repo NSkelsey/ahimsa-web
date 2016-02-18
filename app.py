@@ -15,12 +15,13 @@ from sqlalchemy.orm import joinedload
 
 import config, models, filters, side_thread
 from config import BLK_DAY_STRF
-from models import Base, BlockHead, Bulletin, db_session
+from models import BlockHead, Bulletin, db_session
 from filters import DayBrowser
 
 app = Flask(__name__)
 app.config.from_object(config)
 app.wsgi_app = ProxyFix(app.wsgi_app)
+
 
 # Flask-Assets
 assets = Environment(app)
@@ -58,15 +59,8 @@ for name, obj in inspect.getmembers(filters):
     if inspect.isfunction(obj):
         app.jinja_env.filters[name] = obj
 
-# Add global variables to jinja2
-app.jinja_env.globals['bitcoind_status'] = 'Dead'
-app.jinja_env.globals['ahimsad_status'] = 'Dead'
-
-# start refresh thread that checks daemon status occasionally
-side_thread.update_globals(app.jinja_env.globals)
-
 # Find the day of the first block was created
-GENESIS_BLK = BlockHead.query.filter(BlockHead.height==0).first()
+GENESIS_BLK = BlockHead.query.order_by(BlockHead.height).first()
 
 #
 # Routes
@@ -180,6 +174,16 @@ def block(hash):
         abort(404)
     return render_template('block.html', block=block)
 
+@app.route('/tags')
+def tags():
+    tags = db_session.query(func.count('*'), Bulletin.tags.label('title'))\
+        .group_by(Bulletin.tags)\
+        .order_by(desc('1'))\
+        .limit(25)\
+        .all()
+    return render_template('topics.html', topics=tags)
+
+
 @app.route('/topics')
 def topics():
     topics = db_session.query(func.count('*'), Bulletin.topic.label('title'))\
@@ -189,9 +193,9 @@ def topics():
         .all()
     return render_template('topics.html', topics=topics)
 
-@app.route('/topic/<string:topurl>')
-def topic(topurl):
-    topic = urllib.unquote(topurl)
+@app.route('/tag/<string:tagurl>')
+def tag(tagurl):
+    tag = urllib.unquote(tagurl)
 
     headline = db_session\
         .query(func.count('*').label('num'), Bulletin.topic.label('title'))\
@@ -210,7 +214,6 @@ def topic(topurl):
             .limit(25)\
             .all()
     bltns = [bltn for (bltn, _) in res]
-
     return render_template('topic.html', headline=headline, topic=topic, bltns=bltns)
 
 @app.route('/authors')
@@ -221,7 +224,6 @@ def authors():
         .order_by(desc('1'))\
         .limit(25)\
         .all()
-
     return render_template('authors.html', authors=authors)
 
 @app.route('/author/<string:address>')

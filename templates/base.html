@@ -15,19 +15,11 @@
                     <div class="logo">
                         <h1><a href="/">a<span>·</span>him<span>·</span>sa</a></h1><p class="tag">Spread The Truth</p>
                     </div>
-                    <div class="status"> 
-                        <table class="table">
-                            <tbody>
-                                <tr><td>ahimsad:</td><td class="{{ ahimsad_status }}">{{ ahimsad_status | title }}</td></tr>
-                                <tr><td>bitcoind:</td><td class="{{ bitcoind_status }}">{{ bitcoind_status | title }}</td></tr>
-                            </tbody>
-                        </table>
-                    </div>
                 </div>
                 <div class="navi-bar">
                     <div class="navi-items">
                         <a href="{{ url_for('authors') }}">Authors</a>
-                        <a href="{{ url_for('topics') }}">Topics</a>
+                        <a href="{{ url_for('tags') }}">Tags</a>
                         <a href="{{ '' | todays_blocks }}">Blocks</a>
                         <a class="no-mobile" href="{{ url_for('create') }}">Create</a>
                         <a class="no-mobile" href="{{ url_for('about') }}">About</a>

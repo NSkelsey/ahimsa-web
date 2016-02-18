@@ -26,19 +26,34 @@ class Bulletin(Base):
 
     txid        = Column(String, primary_key=True)
     author      = Column(String, nullable=False)
-    topic       = Column('board', String, default='')
     message     = Column(String, default='')
     timestamp   = Column(Integer)
     blockhash   = Column(String, ForeignKey('blocks.hash'), name="block")
     block       = relationship('BlockHead', uselist=False)
 
+    tags       = relationship('Tag')
+
     def __repr__(self):
         t = trim(7)
-        s = '<Bltn tx:{0} auth:{3} topic:{1} msg:{2}>'
-        return s.format(t(self.txid), t(self.topic), len(self.message), t(self.author))
+        s = '<Bltn tx:{0} auth:{1} timestamp:{2} msg:{3}>'
+        return s.format(t(self.txid), t(self.author), self.timestamp, t(self.message))
 
 def trim(l):
     return lambda s: s if len(s) < l else s[:l]
+
+class Tag(Base):
+
+    __tablename__ = 'tags'
+
+    txid = Column(String, ForeignKey('bulletins.txid'), primary_key=True)
+    value  = Column(String, primary_key=True)
+
+    bulletin = relationship('Bulletin', back_populates="tags", uselist=True)
+
+    def __repr__(self):
+        t = trim(12)
+        s = '<Tag:{} txid:{}>'
+        return s.format(t(self.value), t(self.txid))
 
 
 class BlockHead(Base):
@@ -86,8 +101,8 @@ db_session = scoped_session(sessionmaker(bind=engine))
 Base.query = db_session.query_property()
 
 if __name__ == '__main__':
-    blk = db_session.query(BlockHead).limit(1).first()
-    bltn = db_session.query(Bulletin).first()
+    #blk = db_session.query(BlockHead).limit(1).first()
+    #bltn = db_session.query(Bulletin).first()
 
-    print blk
-    print bltn
+    tags = db_session.query(Tag).filter_by(value="#preflight").all()
+    print [tag.bulletin for tag in tags]

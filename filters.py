@@ -24,8 +24,9 @@ def topic_count(bltns):
     '''
     if len(bltns) == 0:
         return 0
-    else:
-        return len(set([b.topic for b in bltns]))
+    return 0
+    #else:
+    #    return len(set([b.topic for b in bltns]))
 
 def nice_size_est(bltn):
     '''
@@ -42,7 +43,7 @@ def est_storage(bltn):
     '''
     Estimate the number of bytes needed to store the bulletin
     '''
-    b = len(bltn.message) + len(bltn.topic) + 10
+    b = len(bltn.message) + 100
     return b
 
 def est_burn(bltn):

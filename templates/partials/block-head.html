@@ -6,7 +6,6 @@
             <tr><td>Hash:</td><td class="t">{{ block.hash }}</td></tr>
             <tr><td>Previous Hash:</td><td><a class="t" href={{ url_for('block', hash=block.prevhash) }}>{{ block.prevhash }}</a></td></tr>
             <tr class="nbltns"><td>No of Bulletins:</td><td>{{ block.bulletin_collection | count }}</td></tr>
-            <tr class="ntopics"><td>No of Unique Topics:</td><td>{{ block.bulletin_collection | topic_count }}</td></tr>
         </tbody>
     </table>
 </div>
