@@ -5,6 +5,16 @@ from flask import url_for
 
 from config import BLK_DAY_STRF
 
+def link_tags(message):
+  return message
+
+def conf_img(blk):
+  return "/static/img/totalconf.png"
+
+def unix_nice_date(ts):
+  date = datetime.utcfromtimestamp(ts)
+  return nice_date(date)
+
 def nice_date(date):
     fmt = date.strftime("%H:%M  %b %d, %Y")
     fmt = fmt[:-2] + fmt[-2:].lower()
@@ -17,6 +27,18 @@ def todays_blocks(_):
 def trim_msg(msg):
     if len(msg) > 500:
        pass
+
+import hashlib
+
+def rgb_color(address):
+  m = hashlib.sha1()  
+  m.update(address)
+  d = m.digest()
+  r = ord(d[0])
+  g = ord(d[1])
+  b = ord(d[2])
+
+  return "rgb(%d, %d, %d)" % (r, g, b)
 
 def topic_count(bltns):
     '''

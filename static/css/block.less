@@ -9,6 +9,12 @@
             .hidden-xs();
         }
     }
+
+    @media (max-width: @screen-xs-max) { 
+        .t {
+            font-size: 7pt;
+        }
+    }
 }
 
 .block-bltns {
@@ -36,6 +42,7 @@
         margin-right: (@gutter / -2); 
         margin-left:  (@gutter / -2); 
     }
+
     .timestamp,
     .hash,
     .ntopics {

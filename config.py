@@ -9,9 +9,9 @@ CURDIR         = os.path.abspath(os.curdir)
 #OMBUDS_APP_DIR = os.path.join(__home__, 'Library/Application Support/Ombudscore/node')
 
 # DB Constants
-DB_NAME = 'pubrecord.db'
+#DB_NAME = 'pubrecord.db'
 #DB_PATH = os.path.join(OMBUDS_APP_DIR, DB_NAME)
-DB_PATH = os.path.join('./', 'test.db')
+DB_PATH = os.path.join('./', 'pubrecord.db')
 
 # Bitcoin Parameters
 NETWORK = 'TestNet3'

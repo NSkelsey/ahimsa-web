@@ -1,65 +1,179 @@
 @import "home";
 
-.bltn {
-    .head {
-        .make-row();
-        .topic {
-            .make-sm-column(6, 0);
-            a {
-                color: black;
-            }
-        }
-        border-bottom: 1px solid #DDD;
-    }
-    .below-head {
-        .make-row();
-        .addr {
-           .make-xs-column(6, 0);
-           margin-top: 5px;
-           
-        }
-        .info {
-           margin-top: 5px;
-           .hid {
-               .hidden-xs();
-           }
-           .make-xs-column(6, 0);
-           text-align: right;
-           .text-font();
-           color: gray;
-           p.unconfd {
-               color: maroon;
-           }
-           a {
-               text-decoration: none;
-           }
-           i, p {
-               display: inline;
-               margin-left: 10px;
-               margin-top: 5px;
-            }
-        }
-        
-    }
-   .body {
-       word-wrap: break-word;
-       .make-row();
-       .make-sm-column(12, 0);
-       margin-top: 10px;
-       .empty {
-           padding: 10 0 10 0;
-           text-align: center;
-           color: gray;
-       }
-   }
-}
-
 
 .bulletin-meta {
-    .meta-table();
+  .meta-table();
 
-    .burned, .stored,
-    .version, .blk-ts, .bltn-ts, {
-        .hidden-xs();
+  .burned, .stored,
+  .version, .blk-ts, .bltn-ts, {
+    .hidden-xs();
+  }
+}
+
+
+
+
+.addr {
+    a {
+        display: inline-block;   
+        margin-right: 10px;
+        font-weight: bold;
+        font-size: 15px;
+        color: black;
+        font-family: Courier, monospace;
+    }
+    svg {
+        display: inline;
     }
 }
+
+
+
+
+div.card {
+  box-shadow: 0px 0px 3px rgba(0, 0, 0, 0.6);
+  background-color: white;
+  padding: 15px 15px 20px 15px; 
+}
+
+/*************** Bulletin Card Styles **********************/
+
+div.pinnedBulletin {
+  border-bottom: 1px solid #AAAAAA;
+}
+
+div.pinnedBulletin.linked {
+  background-color: cyan;
+}
+
+.pinnedBulletin.detail {
+  background-color: rgba(255, 244, 220, 0.6);
+}
+
+.pinnedBulletin .markdown {
+  word-wrap: break-word;
+ }
+
+.pinnedBulletin .topline {
+    width: 100%;
+    padding-bottom: 3px;
+    height: 25px;
+    position: relative;
+}
+
+.pinnedBulletin .topline div {
+  display: inline-block;
+}
+
+.pinnedBulletin .authorbox,
+.pinnedBulletin .boardBox {
+  width: 33%;
+  position: relative;
+}
+
+
+.authorbox .author-icon {
+  top: 2px;
+  position: absolute;
+}
+
+.authorbox .text {
+  margin-left: 23px;
+}
+
+.topline a {
+  font-family: "Monaco", Monaco, monospace, sans-serif;
+  text-decoration: underline;
+  color: black;
+}
+
+.topline .author a {
+  text-decoration: none;
+}
+
+.topline a:hover {
+  text-decoration: underline;
+}
+
+
+.pinnedBulletin .timestamp {
+  width: 33%;
+  text-align: center;
+}
+
+.pinnedBulletin .interact {
+  width: 32%;
+}
+
+.pinnedBulletin .setting {
+  height: 25px;
+  position:absolute; 
+  bottom: 6px;
+  right: 60px;
+}
+
+.pinnedBulletin input.render {
+  position: absolute;
+  top: 2px;
+  right: 30px;
+}
+
+.pinnedBulletin .slider {
+  height: 25px;
+  position:absolute; 
+  bottom: 5px;
+  right: 30px;
+}
+.pinnedBulletin .confs {
+  height: 22px;
+  position:absolute; 
+  bottom: 6px;
+  right: 3px;
+}
+
+.pinnedBulletin .msg {
+  word-wrap: break-word;
+  margin-top: 14px;
+  margin-bottom: 14px;
+}
+
+.pinnedBulletin .markdown img {
+  max-width: 436px;
+  max-height: 436px;
+}
+.pinnedBulletin .markdown img {
+  margin: 0 auto; 
+  display: block;
+}
+
+.pinnedBulletin td {
+  border-bottom: 1px solid #AAAAAA;
+  padding: 4px;
+}
+
+
+.pinnedBulletin table {
+  border-spacing: 0px;
+}
+
+.pinnedBulletin table {
+  border-top: 1px solid #AAAAAA;
+}
+
+.pinnedBulletin table tr {
+  border-bottom: 1px solid #AAAAAA;
+}
+
+.pinnedBulletin table tr td:first-child {
+  border-right: 1px solid #AAAAAA;
+  font-weight: bold;
+}
+
+.pinnedBulletin table tr td:last-child {
+  font-family: monospace;
+}
+
+.pinnedBulletin td.tiny {
+  font-size: 0.55em;
+}
+

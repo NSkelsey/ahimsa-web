@@ -26,15 +26,6 @@ app.wsgi_app = ProxyFix(app.wsgi_app)
 # Flask-Assets
 assets = Environment(app)
 
-js_files = ['lib/js/jquery.js', 'lib/bootstrap/dist/js/bootstrap.js', 
-            'lib/js/d3.js', 'lib/js/md5.js']
-js = Bundle(*js_files, output='gen/js_lib.js')
-assets.register('js_lib', js)
-
-js_files = ['/'.join(f.split('/')[1:]) for f in glob('static/js/*.js')]
-js = Bundle(*js_files, output='gen/js_all.js')
-assets.register('js', js)
-
 less = Bundle('css/app.less', depends="css/*.less", 
               filters='less', output='gen/css_all.css')
 assets.register('css', less)
@@ -182,6 +173,10 @@ def tags():
         .limit(25)\
         .all()
     return render_template('topics.html', topics=tags)
+
+@app.route('/new')
+def new():
+  return render_template('new.html', new=[])
 
 
 @app.route('/topics')

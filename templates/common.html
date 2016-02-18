@@ -1,53 +1,37 @@
 {% macro render_author(address) %}
 <div class="addr">
-    <a href="{{ url_for('author', address=address) }}">{{ address[1:9] }}</a>
+  <svg width="15" height="15">
+  <rect x="0" y="0" rx="2" ry="2" width="15" height="15" fill="{{ address | rgb_color }}"></rect>
+  </svg>
+  <a href="{{ url_for('author', address=address) }}">{{ address[1:9] }}</a>
 </div>
 {% endmacro %}
 
 {% macro render_bulletin(bltn, fullmsg) %}
-<div class="bltn"> 
-        <div class="head">
-            <a href=""><h4 class="topic">Beans</h4></a>
-        </div>
-        <div class="below-head">
-            {{ render_author(bltn.author) }}
-            <div class="info">
-                {% if fullmsg %}
-                <a>
-                    <i class="glyphicon glyphicon-paperclip"></i>
-                </a>
-                {% else %}
-                    {% if not bltn.block %}<p class="hid unconfd">Unconfirmed</p>
-                    {% else %}<p class="hid"><a href="{{ url_for('block', hash=bltn.block.hash) }}">{{ bltn.block.height }}</p>
-                {% endif %}
-                <a href={{ url_for('bulletin', txid=bltn.txid) }}>
-                    <i class="glyphicon glyphicon-log-out"></i>
-                </a>
-                {% endif %}
-                <a class="hid" href="https://www.biteasy.com/testnet/transactions/{{ bltn.txid }}">
-                    <i class="glyphicon glyphicon-new-window"></i>
-                </a>
-            </div>
-        </div>
-        <div class="body">
-            {% if bltn.message != "" %}
-                {% if fullmsg %}
-                    {{ render_markdown(bltn.message) | safe }}
-                {% else %}
-                <p>{{ bltn.message | truncate(500) }}</p>
-                {% endif %}
-            {% else %}
-                <p class="empty">--- No Content ---</p>
-            {% endif %}
-        </div>
+<div class="pinnedBulletin card" class=""> <!-- deleted class -->
+  <div class="topline">
+    <div class="authorbox">
+      {{ render_author(bltn.author) }}
+    </div> 
+    <div class="timestamp">{{ bltn.timestamp | unix_nice_date }}</div>
+    <div class="interact">
+      <a href="{{ url_for("bulletin", txid=bltn.txid) }}"><img class="confs" src="{{ bltn.block | conf_img }}"/></a>
+    </div>
+  </div>
+  <div class="norm-wrap" ng-hide="bltn.detail">
+    <div class="msg" ng-hide="bltn.renderMd">
+      {{ bltn.message | link_tags }} 
+    </div>
+  </div>
 </div>
 {% endmacro %}
 
+
 {% macro render_row_bltn(bltn) %}
 <tr>
-    <td class="author">{{ render_author(bltn.author) }}</td>
-    <td class="topic"><a href="{{ url_for("topic", topurl=bltn.topic) }}">{{ bltn.topic | truncate(30, true) }}</a></td>
-    <td class="txid"><a class="t" href="{{ url_for("bulletin", txid=bltn.txid) }}">{{ bltn.txid | truncate(30, true) }}</a></td>
-    <td class="len">{{ bltn | nice_size_est }}</td>
+  <td class="author">{{ render_author(bltn.author) }}</td>
+  <td class="topic"><a href="{{ url_for("topic", topurl=bltn.topic) }}">{{ bltn.topic | truncate(30, true) }}</a></td>
+  <td class="txid"><a class="t" href="{{ url_for("bulletin", txid=bltn.txid) }}">{{ bltn.txid | truncate(30, true) }}</a></td>
+  <td class="len">{{ bltn | nice_size_est }}</td>
 </tr>
 {% endmacro %}
