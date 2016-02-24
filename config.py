@@ -20,3 +20,7 @@ NETWORK = 'TestNet3'
 DEBUG   = True
 
 BLK_DAY_STRF = '%Y-%m-%d' 
+
+API_HOST = "localhost:1055"
+
+API_URL = "http://" + API_HOST + "/api"

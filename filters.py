@@ -1,15 +1,35 @@
 import math
 from datetime import datetime, timedelta
 
+from requests import ConnectionError
 from flask import url_for
 
+import utils
 from config import BLK_DAY_STRF
+
+tipTrack = utils.TipTracker()
 
 def link_tags(message):
   return message
 
+def tag_list(msg):
+  tags = [i  for i in msg.split() if i.startswith("#")]
+  return tags
+
+
 def conf_img(blk):
-  return "/static/img/totalconf.png"
+  chain_tip = None
+  try:
+    chain_tip = tipTrack.get_chain_tip()
+  except ConnectionError:
+    return
+  height = chain_tip['height'] - blk['h']
+  if height > 5:
+    return "/static/img/totalconf.png"
+  elif height < 0:
+    return "/static/img/0conf.png"
+  else:
+    return "/static/img/%dconf.png" % height
 
 def unix_nice_date(ts):
   date = datetime.utcfromtimestamp(ts)
@@ -65,7 +85,7 @@ def est_storage(bltn):
     '''
     Estimate the number of bytes needed to store the bulletin
     '''
-    b = len(bltn.message) + 100
+    b = len(bltn['msg']) + 100
     return b
 
 def est_burn(bltn):

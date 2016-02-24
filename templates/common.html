@@ -15,12 +15,12 @@
     </div> 
     <div class="timestamp">{{ bltn.timestamp | unix_nice_date }}</div>
     <div class="interact">
-      <a href="{{ url_for("bulletin", txid=bltn.txid) }}"><img class="confs" src="{{ bltn.block | conf_img }}"/></a>
+      <a href="{{ url_for("bulletin", txid=bltn.txid) }}"><img class="confs" src="{{ bltn.blkref | conf_img }}"/></a>
     </div>
   </div>
   <div class="norm-wrap" ng-hide="bltn.detail">
     <div class="msg" ng-hide="bltn.renderMd">
-      {{ bltn.message | link_tags }} 
+      {{ bltn.msg | link_tags }} 
     </div>
   </div>
 </div>
@@ -30,8 +30,9 @@
 {% macro render_row_bltn(bltn) %}
 <tr>
   <td class="author">{{ render_author(bltn.author) }}</td>
-  <td class="topic"><a href="{{ url_for("topic", topurl=bltn.topic) }}">{{ bltn.topic | truncate(30, true) }}</a></td>
+  <td class="topic">{{ bltn.msg | tag_list | e }}</td>
   <td class="txid"><a class="t" href="{{ url_for("bulletin", txid=bltn.txid) }}">{{ bltn.txid | truncate(30, true) }}</a></td>
+  <td class="len">{{ bltn.numEndos }}</td>
   <td class="len">{{ bltn | nice_size_est }}</td>
 </tr>
 {% endmacro %}

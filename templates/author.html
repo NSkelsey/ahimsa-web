@@ -5,11 +5,11 @@
 {% block content %}
 
 <div class="sub-head">
-    <h4 class="t">{{ author.name }} <small> Has published {{ author.num }} Bulletins</small></h4>
+    <h4 class="t">{{ author.summary.addr }} <small> Has published {{ author.bltns | length }} Bulletins</small></h4>
 </div>
 
 <div class="bltn-list list">
-{% for bltn in bltns %}
+{% for bltn in author.bltns %}
 <div class="item"><div class="nest msg">
     {{ render_bulletin(bltn) }}
 </div></div>

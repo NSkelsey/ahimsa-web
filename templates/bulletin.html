@@ -8,7 +8,7 @@
     <h3>Bulletin <small>{{ bltn.txid }}</small></h3>
 </div>
 {% with bltn=bltn %}
-    {% include 'partials/bulletin.html' %}
+    {% include 'partials/bltn-head.html' %}
 {% endwith %}
 
 {{ render_bulletin(bltn, fullmsg=true) }}

@@ -1,14 +1,14 @@
 <table class="table bulletin-meta">
     <tbody>
-        {% if bltn.block %}
-        <tr class="blk-ts"><td>Block Timestamp:</td><td>{{ bltn.block.datetime() }}</td></tr>
+        {% if bltn.blkref %}
+        <tr class="blk-ts"><td>Block Timestamp:</td><td>{{ bltn.blkref.ts | unix_nice_date }}</td></tr>
         {% endif %}
-        <tr class="bltn-ts"><td>Reported Timestamp:</td><td>{{ bltn.timestamp }}</td></tr>
+        <tr class="bltn-ts"><td>Reported Timestamp:</td><td>{{ bltn.timestamp | unix_nice_date }}</td></tr>
         <tr><td>Txid:</td><td class="t">{{ bltn.txid }}</td></tr>
         <tr>
             <td>Block:</td>
-        {% if bltn.block %}
-            <td><a class="t" href="{{ url_for('block', hash=bltn.block.hash) }}">{{ bltn.block.hash }}</a></td></tr>
+        {% if bltn.blkref %}
+            <td><a class="t" href="{{ url_for('block', hash=bltn.blkref.hash) }}">{{ bltn.blkref.hash }}</a></td></tr>
         {% else %}
             <td style="color: maroon;">Unconfirmed</td> 
         {% endif %}

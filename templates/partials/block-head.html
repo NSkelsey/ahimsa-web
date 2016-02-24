@@ -1,12 +1,12 @@
 <div class="block-head">
     <table class="table">
         <tbody>
-            <tr><td>Timestamp:</td><td>{{ block.datetime() | nice_date }}</td></tr>
-            <tr><td>Height:</td><td>{{ block.height }}</td></tr>
-            <tr><td>Hash:</td><td class="t">{{ block.hash }}</td></tr>
-            <tr><td>Previous Hash:</td><td><a class="t" href={{ url_for('block', hash=block.prevhash) }}>{{ block.prevhash }}</a></td></tr>
-            <tr class="nbltns"><td>Num Bulletins:</td><td>{{ block.bulletin_collection | count }}</td></tr>
-            <tr class="nbltns"><td>Num Endorsements:</td><td>{{ block.endorsement_collection | count }}</td></tr>
+            <tr><td>Timestamp:</td><td>{{ block.head.timestamp | unix_nice_date }}</td></tr>
+            <tr><td>Height:</td><td>{{ block.head.height }}</td></tr>
+            <tr><td>Hash:</td><td class="t">{{ block.head.hash }}</td></tr>
+            <tr><td>Previous Hash:</td><td><a class="t" href={{ url_for('block', hash=block.head.prevHash) }}>{{ block.head.prevHash }}</a></td></tr>
+            <tr class="nbltns"><td>Num Bulletins:</td><td>{{ block.head.numBltns }}</td></tr>
+            <tr class="nbltns"><td>Num Endorsements:</td><td>{{ block.head.numEndos }}</td></tr>
         </tbody>
     </table>
 </div>

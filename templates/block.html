@@ -5,7 +5,7 @@
 {% block content %}
 
 <div class="sub-head">
-    <h3>Block #{{ block.height }}<small>{{ block.hash }}</small></h3>
+    <h3>Block #{{ block.head.height }}<small>{{ block.head.hash }}</small></h3>
 </div>
 
 
@@ -18,20 +18,21 @@
 </div>
 
 
-{% if block.bulletin_collection|count > 0 %}
+{% if block.head.numBltns > 0 %}
 <div class="row">
     <div class="block-bltns">
         <table class="table">
             <thead>
                 <tr>
                     <th class="author">Author</th>
-                    <th class="topic">Topic</th>
+                    <th class="topic">Tags</th>
                     <th class="txid">Txid</th>
+                    <th class="len">Num Endorsements</th>
                     <th class="len">Message Len</th>
                 </tr>
             </thead>
             <tbody>
-            {% for bltn in block.bulletin_collection %}
+            {% for bltn in block.bltns %}
                 {{ render_row_bltn(bltn) }}
             {% endfor %}
             </tbody>
