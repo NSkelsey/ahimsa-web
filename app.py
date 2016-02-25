@@ -1,10 +1,11 @@
 import calendar
 import inspect
 import urllib
+import requests
 from datetime import date, datetime
 from glob import glob
-import requests
 
+import jinja2, werkzeug
 from flask import Flask, render_template, abort, url_for, redirect
 from flask.ext.sqlalchemy import SQLAlchemy
 from flask.ext.assets import Environment, Bundle, ManageAssets
@@ -42,6 +43,7 @@ for name, obj in inspect.getmembers(filters):
     if inspect.isfunction(obj):
         app.jinja_env.filters[name] = obj
 
+
 # Find the day of the first block was created
 GENESIS_BLK = BlockHead.query.order_by(BlockHead.height).first()
 
@@ -51,7 +53,20 @@ GENESIS_BLK = BlockHead.query.order_by(BlockHead.height).first()
 
 @app.route('/')
 def home():
-    return render_template('home.html', unconfd_bltns=[], confd_bltns=[])
+    top_tags = make_api_req('/pop-tags')
+    if len(top_tags) > 6:
+      top_tags = top_tags[:6]
+    pop_tags = []
+    for i in range(len(top_tags)):
+      tag = top_tags[i]
+      pop_tags.append(tag)
+      pop_tags.append(tag)
+      pop_tags.append(tag)
+    most_endo = make_api_req('/most-endo')
+    new_stats = make_api_req('/new/statistics')
+    new = make_api_req('/new')
+    new['bulletins'] = new['bulletins'][:5]
+    return render_template('home.html', top_tags=pop_tags, most_endo=most_endo, new=new)
 
 @app.route('/about')
 def about():
@@ -72,15 +87,26 @@ def block(hash):
     block = make_api_req('/block/%s' % hash)
     return render_template('block.html', block=block)
 
-@app.route('/new')
-def new():
-  return render_template('new.html', new=[])
+@app.route('/all-bltns')
+def all_bltns():
+  new = make_api_req('/new') 
+  bltns = sorted(new['bulletins'], key=lambda x: x['blkref']['ts'], reverse=True)
+  return render_template('all-bltns.html', bltns=bltns)
+
+@app.route('/tags/')
+def tags():
+  top_tags = make_api_req('/pop-tags')
+  return render_template('tags.html', tags=top_tags)
 
 @app.route('/tag/<string:tagurl>')
 def tag(tagurl):
     tag = urllib.unquote(tagurl)
-    tag = make_api_req("/tag/%s" % tag)
-    return render_template('tag.html', tag=tag)
+    tag = make_api_req('/tag/%s' % tag)
+    headline = {
+      'title': '#'+tagurl,
+      'num': len(tag['bulletins']),
+    }
+    return render_template('tag.html', tag=tag, headline=headline)
 
 @app.route('/author/<string:address>')
 def author(address):

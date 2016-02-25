@@ -5,6 +5,7 @@
 @gutter: 0;
 @grid-gutter-width: 0;
 @text-size: 16px;
+@full-width: 970px;
 
 /* ====== Font Mixins ====== */
 .text-font() {
@@ -29,7 +30,7 @@
 
 @media (min-width: 1200px) {
     .container {
-        width: 970px !important;
+        width: @full-width !important;
     }
 }
 
@@ -132,6 +133,11 @@ div.top-bar {
         margin-top: 10px;
     }
 }
+
+.sub-head.for-tags {
+  margin-bottom: 10px;
+}
+
 
 .sub-sub-head {
     border-bottom: 1px gray dotted;

@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% from 'common.html' import render_tag %}
+
+{% block content %}
+<div class="sub-head">
+    <h3>Tags <small>By Score</small></h3>
+</div>
+
+<div class="list">
+    {% for tag in tags %} 
+    {{ render_tag(tag) }}
+    {% endfor %}
+</div>
+{% endblock content %}
+

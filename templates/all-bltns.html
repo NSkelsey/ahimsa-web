@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% from 'common.html' import render_bulletin %} 
+
+{% block content %}
+
+<div class="sub-head">
+    <h3>All Bulletins<small>Every Bulletin in the record ordered by block timestamp.</small></h3>
+</div>
+<div class="list">
+    {% for bltn in bltns %} 
+    {{ render_bulletin(bltn) }}
+    {% endfor %}
+</div>
+
+
+
+{% endblock content %}

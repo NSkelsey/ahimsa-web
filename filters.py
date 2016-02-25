@@ -9,13 +9,17 @@ from config import BLK_DAY_STRF
 
 tipTrack = utils.TipTracker()
 
+def plural(cnt, sing, plural):
+  if cnt > 1:
+    return plural
+  return sing
+
 def link_tags(message):
   return message
 
 def tag_list(msg):
   tags = [i  for i in msg.split() if i.startswith("#")]
   return tags
-
 
 def conf_img(blk):
   chain_tip = None
@@ -31,13 +35,15 @@ def conf_img(blk):
   else:
     return "/static/img/%dconf.png" % height
 
-def unix_nice_date(ts):
+def unix_nice_date(ts, just_day=False):
   date = datetime.utcfromtimestamp(ts)
-  return nice_date(date)
+  return nice_date(date, just_day)
 
-def nice_date(date):
+def nice_date(date, just_day=False):
     fmt = date.strftime("%H:%M  %b %d, %Y")
     fmt = fmt[:-2] + fmt[-2:].lower()
+    if just_day:
+      fmt = date.strftime("%b %d, %Y")
     return fmt
 
 def todays_blocks(_):

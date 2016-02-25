@@ -1,28 +1,32 @@
 {% extends 'base.html' %}
-{% from 'common.html' import render_bulletin %}
+{% from 'common.html' import render_bulletin, render_tag %}
 
 {% block content %}
+<div class="sub-head for-tags">
+    <h3>Popular Tags<small>It's a formula, not a contest.</small></h3>
+</div>
+<div>
+  {% for tag in top_tags %}
+  {{ render_tag(tag) }}
+  {% endfor %}
+</div>
 <div class="sub-head">
-    <h3>Recently Seen <small>These are Bulletins that have not been mined.</small></h3>
+  <h3>Most Endorsed Bulletins<small>Anyone can endorse bulletins.</small></h3>
 </div>
 <div class="bltn-list list">
-    {% for bltn in unconfd_bltns %}
-    <div class="item"><div class="msg">
-            {{ render_bulletin(bltn) }}
-    </div></div>
-    {% else %}
-    <div class="empty-list">
-        <h4>There are no unconfirmed bulletins.</h4>
-    </div>
-    {% endfor %}
+  {% for bltn in most_endo | sort(True, attribute="timestamp") %}
+  {{ render_bulletin(bltn) }}
+  {% endfor %}
 </div>
 
 <div class="sub-head">
-    <h3>Recently Confirmed<small>These are Bulletins that were just mined.</small></h3>
+    <a id="new"></a>
+    <h3>Recently Confirmed<small>The newest bulletins in the record.</small></h3>
 </div>
 <div class="bltn-list list">
-    {% for bltn in confd_bltns %}
+    {% for bltn in new.bulletins | sort(True, attribute="timestamp") %}
     {{ render_bulletin(bltn) }}
     {% endfor %}
 </div>
+<p><a href="{{ url_for('all_bltns') }}">See More »</a></p>
 {% endblock content %}

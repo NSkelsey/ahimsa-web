@@ -18,7 +18,9 @@
                 </div>
                 <div class="navi-bar">
                     <div class="navi-items">
-                        <a href="{{ url_for('new') }}">New</a>
+                        <a href="/#new">New</a>
+                        <a href="{{ url_for('tags') }}">All Tags</a>
+                        <a href="{{ url_for('all_bltns') }}">All Bulletins</a>
                         <a class="no-mobile" href="{{ url_for('about') }}">About</a>
                     </div>
                 </div>
@@ -26,13 +28,5 @@
             {% block content %}
             {% endblock content %}
         </div>
-
-        {% assets "js_lib" %}
-        <script src="{{ ASSET_URL }}"></script>
-        {% endassets %}
-
-        {% assets "js" %}
-        <script src="{{ ASSET_URL }}"></script>
-        {% endassets %}
     </body>
 </html>

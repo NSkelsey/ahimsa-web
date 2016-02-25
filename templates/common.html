@@ -26,6 +26,17 @@
 </div>
 {% endmacro %}
 
+{% macro render_tag(tag) %}
+<a class="tag-wrap" href="{{ url_for("tag", tagurl=tag.val[1:]) }}">
+  <div class="tag card">
+    <h4 class="val">{{ tag.val}}</h4>
+    <div class="bottom-line">
+      <span class="score">{{ tag.score }} Points</span>
+      <span class="num-date">Created on {{ tag.ts | unix_nice_date(just_day=True) }} with {{ tag.num }} {{ tag.num | plural('Post', 'Posts') }}</span>
+    </div>
+</div>
+</a>
+{% endmacro %}
 
 {% macro render_row_bltn(bltn) %}
 <tr>
