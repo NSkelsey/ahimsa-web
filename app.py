@@ -6,9 +6,8 @@ from flask.ext.assets import Environment, Bundle, ManageAssets
 from flask.ext.script import Manager
 from werkzeug.contrib.fixers import ProxyFix
 
-import config, models, filters
+import config, filters
 from config import API_URL
-from models import BlockHead, Bulletin, db_session
 from utils import make_api_req
 
 
