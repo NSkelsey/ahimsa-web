@@ -1,22 +1,14 @@
-import calendar
-import inspect
-import urllib
-import requests
+import inspect, urllib, requests
 from datetime import date, datetime
 
 from flask import Flask, render_template, abort, url_for, redirect
-from flask.ext.sqlalchemy import SQLAlchemy
 from flask.ext.assets import Environment, Bundle, ManageAssets
 from flask.ext.script import Manager
 from werkzeug.contrib.fixers import ProxyFix
-from markdown2 import Markdown
-from sqlalchemy import func, desc, and_, distinct
-from sqlalchemy.orm import joinedload
 
-import config, models, filters, side_thread
-from config import BLK_DAY_STRF, API_URL
+import config, models, filters
+from config import API_URL
 from models import BlockHead, Bulletin, db_session
-from filters import DayBrowser
 from utils import make_api_req
 
 
@@ -104,12 +96,7 @@ def author(address):
 
 @manager.command
 def runserver():
-    app.run('0.0.0.0', port=8000, debug=config.DEBUG)
-
-@manager.command
-def shell():
-    from IPython import embed
-    embed()
+    app.run('localhost', port=8000, debug=config.DEBUG)
 
 if __name__ == '__main__':
     manager.run()
