@@ -8,13 +8,14 @@
 {% endmacro %}
 
 {% macro render_bulletin(bltn, fullmsg) %}
-<div class="pinnedBulletin card" class=""> <!-- deleted class -->
+<div class="pinnedBulletin card">
   <div class="topline">
     <div class="authorbox">
       {{ render_author(bltn.author) }}
     </div> 
     <div class="timestamp">{{ bltn.timestamp | unix_nice_date }}</div>
     <div class="interact">
+      <a class="endo-cnt">3 endos</a>
       <a href="{{ url_for("bulletin", txid=bltn.txid) }}"><img class="confs" src="{{ bltn.blkref | conf_img }}"/></a>
     </div>
   </div>
@@ -46,4 +47,18 @@
   <td class="len">{{ bltn.numEndos }}</td>
   <td class="len">{{ bltn | nice_size_est }}</td>
 </tr>
+{% endmacro %}
+
+{% macro render_endorsement(endo) %}
+<div class="endo card">
+    <div class="authorbox">
+      {{ render_author(endo.author) }}
+    </div> 
+    <svg class="check" width="16" height="16">
+      <circle cx="8" cy="8" r="6" fill="rgb(188, 227, 163)"></circle>
+    </svg>
+    <p class="ts">
+      Endorsed on {{ endo.timestamp | unix_nice_date }}
+    </p>
+</div>
 {% endmacro %}

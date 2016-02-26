@@ -3,9 +3,7 @@ import inspect
 import urllib
 import requests
 from datetime import date, datetime
-from glob import glob
 
-import jinja2, werkzeug
 from flask import Flask, render_template, abort, url_for, redirect
 from flask.ext.sqlalchemy import SQLAlchemy
 from flask.ext.assets import Environment, Bundle, ManageAssets
@@ -44,9 +42,6 @@ for name, obj in inspect.getmembers(filters):
         app.jinja_env.filters[name] = obj
 
 
-# Find the day of the first block was created
-GENESIS_BLK = BlockHead.query.order_by(BlockHead.height).first()
-
 #
 # Routes
 #
@@ -75,6 +70,8 @@ def about():
 @app.route('/bulletin/<string:txid>')
 def bulletin(txid):
     bltn = make_api_req("/bltn/%s" % txid)
+    for i in range(0, 6):
+      bltn['endos'].append(bltn['endos'][0])
     return render_template('bulletin.html', bltn=bltn)
 
 #

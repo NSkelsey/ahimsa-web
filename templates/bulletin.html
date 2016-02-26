@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 
-{% from 'common.html' import render_bulletin %}
+{% from 'common.html' import render_bulletin, render_endorsement %}
 
 {% block content %}
 
@@ -12,5 +12,14 @@
 {% endwith %}
 
 {{ render_bulletin(bltn, fullmsg=true) }}
+
+<div class="sub-sub-head">
+Endorsements
+</div>
+<div class="list">
+{% for endo in bltn.endos %}
+  {{ render_endorsement(endo) }}
+{% endfor %}
+</div>
 
 {% endblock %}
