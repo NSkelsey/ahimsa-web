@@ -9,6 +9,15 @@ from config import BLK_DAY_STRF
 
 tipTrack = utils.TipTracker()
 
+def endo_colors(num):
+  if num < 1:
+    return "#BBB"
+  elif 2 < num and num < 5:
+    return "rgb(188, 227, 163)"
+  else:
+    return "#6cc644"
+
+
 def plural(cnt, sing, plural):
   if cnt > 1:
     return plural

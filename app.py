@@ -51,17 +51,11 @@ def home():
     top_tags = make_api_req('/pop-tags')
     if len(top_tags) > 6:
       top_tags = top_tags[:6]
-    pop_tags = []
-    for i in range(len(top_tags)):
-      tag = top_tags[i]
-      pop_tags.append(tag)
-      pop_tags.append(tag)
-      pop_tags.append(tag)
     most_endo = make_api_req('/most-endo')
     new_stats = make_api_req('/new/statistics')
     new = make_api_req('/new')
     new['bulletins'] = new['bulletins'][:5]
-    return render_template('home.html', top_tags=pop_tags, most_endo=most_endo, new=new)
+    return render_template('home.html', top_tags=top_tags, most_endo=most_endo, new=new)
 
 @app.route('/about')
 def about():
@@ -70,8 +64,6 @@ def about():
 @app.route('/bulletin/<string:txid>')
 def bulletin(txid):
     bltn = make_api_req("/bltn/%s" % txid)
-    for i in range(0, 6):
-      bltn['endos'].append(bltn['endos'][0])
     return render_template('bulletin.html', bltn=bltn)
 
 #

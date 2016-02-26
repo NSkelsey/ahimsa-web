@@ -15,7 +15,7 @@
     </div> 
     <div class="timestamp">{{ bltn.timestamp | unix_nice_date }}</div>
     <div class="interact">
-      <a class="endo-cnt">3 endos</a>
+      <a class="endo-cnt">{{ render_endo_circ(bltn.numEndos) }}</a>
       <a href="{{ url_for("bulletin", txid=bltn.txid) }}"><img class="confs" src="{{ bltn.blkref | conf_img }}"/></a>
     </div>
   </div>
@@ -61,4 +61,11 @@
       Endorsed on {{ endo.timestamp | unix_nice_date }}
     </p>
 </div>
+{% endmacro %}
+
+{% macro render_endo_circ(num) %}
+<svg class="endo-circ" width=25 height=25>
+  <circle cx="13" cy="13" r="9" stroke="{{ num | endo_colors }}"></circle>
+  <text x=13 y=18 fill="{{ num | endo_colors }}">{{ num }}</text>
+</svg>
 {% endmacro %}
