@@ -32,7 +32,6 @@ for name, obj in inspect.getmembers(filters):
     if inspect.isfunction(obj):
         app.jinja_env.filters[name] = obj
 
-
 #
 # Routes
 #

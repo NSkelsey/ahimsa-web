@@ -1,19 +1,33 @@
 {% extends 'base.html' %}
 
-{% from 'common.html' import render_bulletin %} 
+{% from 'common.html' import render_bulletin, render_endorsement %} 
 
 {% block content %}
 
 <div class="sub-head">
   <h4 class="t">{{ author.summary.addr }} 
-    <small> Has published {{ author.bltns | length }} {{ author.bltns | length | plural('Bulletin', 'Bulletins') }}</small>
+    <small> Has published {{ author.bltns | length }} {{ author.bltns | length | plural('Bulletin', 'Bulletins') }}
+      and {{ author.endos | length }} {{ author.endos | length | plural('Endorsement', 'Endorsements') }}
+    </small>
   </h4>
 </div>
 
-<div class="bltn-list list">
+<div class="list">
 {% for bltn in author.bltns %}
 <div class="item"><div class="nest msg">
     {{ render_bulletin(bltn) }}
+</div></div>
+{% endfor %}
+</div>
+
+{% if author.endos | count > 0 and author.bltns | count > 0 %}
+<div class="sub-sub-head">
+Endorsements
+</div>
+{% endif %}
+{% for endo in author.endos %}
+<div class="item"><div class="nest msg">
+    {{ render_endorsement(endo) }}
 </div></div>
 {% endfor %}
 

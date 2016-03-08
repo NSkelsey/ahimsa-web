@@ -18,9 +18,9 @@ def endo_colors(num):
 
 
 def plural(cnt, sing, plural):
-  if cnt > 1:
-    return plural
-  return sing
+  if cnt == 1:
+    return sing
+  return plural
 
 def link_tags(message):
   return message

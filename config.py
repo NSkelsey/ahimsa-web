@@ -1,7 +1,7 @@
 '''Application config'''
 
 # Configurable parameters.
-DEBUG    = False
+DEBUG    = True
 API_HOST = "localhost:1055"
 
 # Do not change
