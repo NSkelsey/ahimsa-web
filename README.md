@@ -1,28 +1,23 @@
 ahimsa-web
 ==========
 
-Web frontend for messages stored in the blockchain.
+Web frontend for messages stored in the blockchain. This services relies on a [ombwebrelay](https://github.com/soapboxsys/ombudslib/tree/master/cmds/ombwebrelay) server hosting content at `localhost:1055` by default. ahimsa-web can be configured to use external servers like `http://ox.nskelsey.com/` by modifying `settings.py`
 
+Requirements
+============
+
+- Python 2.7
+- Pip
+- VirtualEnv
 
 
 Installation
-======
-You must first have ahimsad running on your machine otherwise running this service
-is pointless. Follow the instructions [here](https://github.com/NSkelsey/ahimsad/blob/master/README.md#installing)
- to get that installed.
+============
 
 ```bash
 > git clone https://github.com/NSkelsey/ahimsa-web && cd ahimsa-web
-> git submodule update --init --recursive
-> easy_install pip
-> pip install -r requirements.txt
-> python app.py
-```
-
-##Running with Virtual Env
-
-Make sure your session is active!
-
-```bash
+> virtualenv venv
 > source venv/bin/activate
+> pip install -r requirements.txt
+> python app.py runserver
 ```
